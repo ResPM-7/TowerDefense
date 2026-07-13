@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 public class TowerPlacer : MonoBehaviour
 {
@@ -13,64 +13,69 @@ public class TowerPlacer : MonoBehaviour
 
     private HashSet<Vector3Int> occupiedTiles = new HashSet<Vector3Int>();
     private GameObject ghostInstance;
+    private GhostTower ghostTowerComponent;
+    private SpriteRenderer ghostSpriteRenderer;
 
 
     private void Update()
     {
-        HandlePlacementHover();
-        HandlePlacementClick();
+        HandlePlacement();
     }
 
-    void HandlePlacementHover()
+    void HandlePlacement()
     {
         if (TowerSelectionUI.selectedTowerPrefab == null)
         {
-            if (ghostInstance != null)
-                Destroy(ghostInstance);
+            if (ghostInstance != null && ghostInstance.activeSelf)
+                ghostInstance.SetActive(false);
             return;
         }
 
         if (ghostInstance == null)
         {
             ghostInstance = Instantiate(ghostPrefab);
+            ghostTowerComponent = ghostInstance.GetComponent<GhostTower>();
+            ghostSpriteRenderer = ghostInstance.GetComponent<SpriteRenderer>();
         }
 
-        ghostInstance.GetComponent<SpriteRenderer>().sprite = TowerSelectionUI.selectedTowerPrefab.GetComponent<SpriteRenderer>().sprite;
+        if (!ghostInstance.activeSelf)
+            ghostInstance.SetActive(true);
 
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPos.z = 0f;
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            ghostInstance.SetActive(false);
+            return;
+        }
 
-        Vector3Int cellpos = placementMap.WorldToCell(mouseWorldPos);
+        Vector3 mouseWroldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        mouseWroldPos.z = 0f;
 
-        Vector3 worldCenter = placementMap.GetCellCenterWorld(cellpos);
+        Vector3Int cellPos = placementMap.WorldToCell(mouseWroldPos);
+        Vector3 worldCenter = placementMap.GetCellCenterWorld(cellPos);
         worldCenter.z = 0f;
 
         ghostInstance.transform.position = worldCenter + new Vector3(0, placementMap.cellSize.y * 0.25f);
+        ghostSpriteRenderer.sprite = TowerSelectionUI.selectedTowerPrefab.GetComponent<SpriteRenderer>().sprite;
 
-        bool valid = placementMap.HasTile(cellpos) && !occupiedTiles.Contains(cellpos);
+        bool isValid = placementMap.HasTile(cellPos)
+            && !unplacementMap.HasTile(cellPos)
+            && !occupiedTiles.Contains(cellPos);
 
-        ghostInstance.GetComponent<GhostTower>().SetValid(valid);
-    }
 
-    void HandlePlacementClick()
-    {
-        if (!Mouse.current.leftButton.wasPressedThisFrame) return;
+        ghostTowerComponent.SetValid(isValid);
 
-        if (TowerSelectionUI.selectedTowerPrefab != null) return;
+        if (Mouse.current.leftButton.wasPressedThisFrame && isValid)
+        {
+            string towerName = TowerSelectionUI.selectedTowerPrefab.name;
 
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+            GameObject tower = ObjectPoolManager.instance.GetObject(towerName);
 
-        Vector3 mouseWorldPos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        mouseWorldPos.z = 0f;
-
-        Vector3Int cellPos = placementMap.WorldToCell(mouseWorldPos);
-
-        if (!placementMap.HasTile(cellPos)) return;
-        if (occupiedTiles.Contains(cellPos)) return;
-
-        Instantiate(TowerSelectionUI.selectedTowerPrefab, ghostInstance.transform.position, Quaternion.identity);
-
-        TowerSelectionUI.selectedTowerPrefab = null;
-        occupiedTiles.Add(cellPos);
+            if (tower != null)
+            {
+                tower.transform.position = ghostInstance.transform.position;
+                tower.transform.rotation = Quaternion.identity;
+                occupiedTiles.Add(cellPos);
+            }
+        }
     }
 }

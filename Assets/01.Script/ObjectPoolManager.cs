@@ -1,84 +1,79 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class ObjectPoolManager<T> : MonoBehaviour where T : Component
+public class ObjectPoolManager : MonoBehaviour
 {
-    public T prefab;
+    public static ObjectPoolManager instance;
 
-    public int initialSize = 10;
+    [SerializeField] List<GameObject> objList = new List<GameObject>();
+    Dictionary<string, Queue<GameObject>> pools = new Dictionary<string, Queue<GameObject>>();
 
-    private Queue<T> pool = new Queue<T>();
+    Dictionary<string, Transform> poolParents = new Dictionary<string, Transform>();
 
-    private void Start()
+    int poolSize;
+    private void Awake()
     {
-        for (int i = 0; i < initialSize; i++)
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+        DontDestroyOnLoad(gameObject);
+    }
+
+    void Start()
+    {
+        poolSize = 5;
+
+        foreach (GameObject obj in objList)
         {
-            T obj = CreateNewObject();
-            pool.Enqueue(obj);
+            pools[obj.name] = new Queue<GameObject>();
+
+            GameObject parentPool = new GameObject($"{obj.name}_Pool");
+            parentPool.transform.SetParent(this.transform);
+            poolParents[obj.name] = parentPool.transform;
+
+            for (int i = 0; i < poolSize; i++)
+            {
+                GameObject go = Instantiate(obj, parentPool.transform);
+                go.name = obj.name;
+                go.SetActive(false);
+                pools[obj.name].Enqueue(go);
+            }
         }
     }
 
-
-    private T CreateNewObject()
+    public GameObject GetObject(string name)
     {
-        T obj = Instantiate(prefab, transform);
-        obj.gameObject.SetActive(false);
-
-        IPoolable poolable = obj.GetComponent<IPoolable>();
-        if (poolable != null)
+        if (!pools.ContainsKey(name))
         {
-            poolable.Init(() => ReturnToPool(obj));
+            return null;
         }
 
-        return obj;
-    }
-
-    public T GetObject(Vector3 position, Quaternion rotation)
-    {
-        T obj;
-
-        if (pool.Count > 0)
+        if (pools[name].Count > 0)
         {
-            obj = pool.Dequeue();
+            GameObject go = pools[name].Dequeue();
+            go.SetActive(true);
+            return go;
         }
         else
         {
-            obj = CreateNewObject();
+            GameObject prefab = objList.Find(obj =>obj.name == name);
+            GameObject go = Instantiate(prefab, poolParents[name]);
+            go.name = prefab.name;
+            go.SetActive(true);
+            return go;
         }
-
-        obj.transform.position = position;
-        obj.transform.rotation = rotation;
-        obj.gameObject.SetActive(true);
-
-        IPoolable poolable = obj.GetComponent<IPoolable>();
-        if (poolable != null)
-        {
-            poolable.OnSpawn();
-        }
-        return obj;
     }
 
-    public void ReturnToPool(T obj)
+    public void ReturnObject(string name, GameObject go)
     {
-        obj.gameObject.SetActive(false);
-
-        IPoolable poolable = obj.GetComponent<IPoolable>();
-        if (poolable != null)
+        if (!pools.ContainsKey(name))
         {
-            poolable.OnDespawn();
+            Destroy(go);
+            return;
         }
-
-        pool.Enqueue(obj);
+        go.SetActive(false);
+        pools[name].Enqueue(go);
     }
-}
 
-
-
-public interface IPoolable
-{
-    void Init(Action returnAction);
-    void OnSpawn();
-    void OnDespawn();
 }
