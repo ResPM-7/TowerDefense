@@ -8,8 +8,8 @@ public class TowerData : ScriptableObject
 
     public int cost;
     public float damage;
-    public float attackRanage;
-    public float attackColldown;
+    public float attackRange;
+    public float attackCooldown;
 
     public TowerData nextUpgradeData;
 }

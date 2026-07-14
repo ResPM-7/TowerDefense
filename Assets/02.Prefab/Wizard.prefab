@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6409821920832580728}
   - component: {fileID: 4347433346389504680}
+  - component: {fileID: -818431759965975867}
   m_Layer: 0
   m_Name: Wizard
   m_TagString: Untagged
@@ -91,3 +92,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &-818431759965975867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2495785808055566570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5f63a0b3ac8fd44befa3d87fa87e64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NormalTower
+  towerData: {fileID: 11400000, guid: 58b53f4a16d6c7746a4d663c7fbb1ae6, type: 2}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
