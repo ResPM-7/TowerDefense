@@ -38,4 +38,13 @@ public class CoinManager : MonoBehaviour
 
         coinText.text = coins.ToString();
     }
+
+    public bool HasEnoughCoins(int cash)
+    {
+        if (coins >= cash)
+        {
+            return true;
+        }
+        return false;
+    }
 }

@@ -41,6 +41,7 @@ public class TowerPlacer : MonoBehaviour
         if (!ghostInstance.activeSelf)
             ghostInstance.SetActive(true);
 
+        //UI클릭시 타워 설치 막아주는 코드
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {
             ghostInstance.SetActive(false);
@@ -57,9 +58,15 @@ public class TowerPlacer : MonoBehaviour
         ghostInstance.transform.position = worldCenter + new Vector3(0, placementMap.cellSize.y * 0.25f);
         ghostSpriteRenderer.sprite = TowerSelectionUI.selectedTowerPrefab.GetComponent<SpriteRenderer>().sprite;
 
+        Tower towerComponent = TowerSelectionUI.selectedTowerPrefab.GetComponent<Tower>();
+        int towerCost = towerComponent != null ? towerComponent.Cost : 0;
+        bool hasEnoughCost = CoinManager.instance.HasEnoughCoins(towerCost);
+
+
         bool isValid = placementMap.HasTile(cellPos)
             && !unplacementMap.HasTile(cellPos)
-            && !occupiedTiles.Contains(cellPos);
+            && !occupiedTiles.Contains(cellPos)
+            && hasEnoughCost;
 
 
         ghostTowerComponent.SetValid(isValid);
@@ -75,6 +82,8 @@ public class TowerPlacer : MonoBehaviour
                 tower.transform.position = ghostInstance.transform.position;
                 tower.transform.rotation = Quaternion.identity;
                 occupiedTiles.Add(cellPos);
+
+                CoinManager.instance.UpdateCoins(-towerCost);
             }
         }
     }
