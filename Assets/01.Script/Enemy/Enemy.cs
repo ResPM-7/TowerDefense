@@ -2,15 +2,14 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] protected float maxHp = 10f;
-    [SerializeField] protected float moveSpeed = 2f;
-    public float MoveSpeed { get { return moveSpeed; } }
+    [SerializeField] private EnemyData enemyData;
+    public float MoveSpeed { get { return enemyData.speed; } }
 
     protected float currentHP;
 
     protected virtual void OnEnable()
     {
-        currentHP = maxHp;
+        currentHP = enemyData.hp;
     }
 
     public virtual void TakeDamage(float damage)

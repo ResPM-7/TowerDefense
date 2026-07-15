@@ -108,3 +108,5 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+  arrowName: Arrow
+  firePoint: {fileID: 3624667630329265888}
