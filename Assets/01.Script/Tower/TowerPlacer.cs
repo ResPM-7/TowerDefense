@@ -8,7 +8,6 @@ public class TowerPlacer : MonoBehaviour
 {
     [SerializeField] private Tilemap placementMap;
     [SerializeField] private Tilemap unplacementMap;
-
     [SerializeField] private GameObject ghostPrefab;
 
     private HashSet<Vector3Int> occupiedTiles = new HashSet<Vector3Int>();
@@ -16,6 +15,15 @@ public class TowerPlacer : MonoBehaviour
     private GhostTower ghostTowerComponent;
     private SpriteRenderer ghostSpriteRenderer;
 
+    private Camera mainCam;
+    private GameObject lastSelectedPrefab = null;
+    private int cachedTowerCost = 0;
+    private string cachedTowerName = "";
+
+    private void Awake()
+    {
+        mainCam = Camera.main;
+    }
 
     private void Update()
     {
@@ -24,10 +32,14 @@ public class TowerPlacer : MonoBehaviour
 
     void HandlePlacement()
     {
+        GameObject currentSelected = TowerSelectionUI.selectedTowerPrefab;
+
         if (TowerSelectionUI.selectedTowerPrefab == null)
         {
             if (ghostInstance != null && ghostInstance.activeSelf)
                 ghostInstance.SetActive(false);
+
+            lastSelectedPrefab = null;
             return;
         }
 
@@ -46,6 +58,11 @@ public class TowerPlacer : MonoBehaviour
         {
             ghostInstance.SetActive(false);
             return;
+        }
+
+        if(currentSelected != lastSelectedPrefab)
+        {
+            lastSelectedPrefab = currentSelected;
         }
 
         Vector3 mouseWroldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
