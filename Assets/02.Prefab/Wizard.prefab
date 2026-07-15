@@ -108,5 +108,5 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  arrowName: 
+  arrowName: WizardBullet
   firePoint: {fileID: 6409821920832580728}

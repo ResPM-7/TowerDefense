@@ -1,11 +1,15 @@
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;
+
     public float MoveSpeed { get { return enemyData.speed; } }
 
     protected float currentHP;
+
+    public static event Action<int> OnEnemyDeath;
 
     protected virtual void OnEnable()
     {
@@ -18,6 +22,7 @@ public class Enemy : MonoBehaviour
 
         if (currentHP <= 0)
         {
+            OnEnemyDeath?.Invoke(enemyData.dropCoins);
             Die();
         }
 

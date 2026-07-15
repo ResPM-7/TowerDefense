@@ -15,7 +15,7 @@ MonoBehaviour:
   towerName: Wizard
   towerPrefab: {fileID: 2495785808055566570, guid: ff474a0c6f2ea9b4bb40ddc9acf3263b, type: 3}
   cost: 20
-  damage: 3
-  attackRange: 5
-  attackCooldown: 2
+  damage: 1
+  attackRange: 3
+  attackCooldown: 0.5
   nextUpgradeData: {fileID: 0}
