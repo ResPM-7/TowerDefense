@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b23dcb12d27eae84592a12d97aa5894c, type: 3}
-  m_Name: ArcherData
+  m_Name: ArcherData_T2
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerName: Archer
+  towerName: Archer_T2
   towerPrefab: {fileID: 6799776522636245986, guid: 38354cdb2b8f57e4385c45c5edec61ff, type: 3}
   cost: 5
   damage: 2

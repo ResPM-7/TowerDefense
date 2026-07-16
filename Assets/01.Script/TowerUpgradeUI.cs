@@ -15,7 +15,7 @@ public class TowerUpgradeUI : MonoBehaviour
 
     private void Start()
     {
-        Hide();
+        HideUI();
 
         upgradeButton.onClick.AddListener(ExecuteUpgrade);
     }
@@ -40,7 +40,7 @@ public class TowerUpgradeUI : MonoBehaviour
         }
     }
 
-    public void Hide()
+    public void HideUI()
     {
         if (uiPanel != null)
         {
@@ -64,6 +64,19 @@ public class TowerUpgradeUI : MonoBehaviour
 
             Vector3 pos = targetTower.transform.position;
             Quaternion rot = targetTower.transform.rotation;
+            string oldName = targetTower.name;
+
+            ObjectPoolManager.instance.ReturnObject(oldName, targetTower.gameObject);
+
+            GameObject newTower = ObjectPoolManager.instance.GetObject(nextUpgradeData.towerPrefab.name);
+
+            if(newTower != null)
+            {
+                newTower.transform.position = pos;
+                newTower.transform.rotation = rot;
+            }
+
+            TowerSelector.Instance.DeselectTower();
         }
     }
 }

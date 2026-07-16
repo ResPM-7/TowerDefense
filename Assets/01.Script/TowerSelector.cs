@@ -21,7 +21,7 @@ public class TowerSelector : MonoBehaviour
 
     private void Start()
     {
-        if (rangeIndicator == null)
+        if (rangeIndicator != null)
             rangeIndicator.gameObject.SetActive(false);
     }
 
@@ -40,7 +40,7 @@ public class TowerSelector : MonoBehaviour
                 Tower clickedTower = hit.collider.GetComponent<Tower>();
                 if (clickedTower != null)
                 {
-                    SelecTower(clickedTower);
+                    SelectTower(clickedTower);
                 }
                 else
                 {
@@ -53,7 +53,7 @@ public class TowerSelector : MonoBehaviour
             }
         }
     }
-    public void SelecTower(Tower tower)
+    public void SelectTower(Tower tower)
     {
         if (currentSelectedTower == tower)
         {
@@ -73,7 +73,7 @@ public class TowerSelector : MonoBehaviour
 
         if (upgradeUI != null)
         {
-
+            upgradeUI.SetTargetTower(tower);
         }
     }
 
@@ -88,7 +88,7 @@ public class TowerSelector : MonoBehaviour
 
         if(upgradeUI != null)
         {
-
+            upgradeUI.HideUI();
         }
     }
 }
