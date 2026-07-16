@@ -34,7 +34,7 @@ public class EnemyMovement : MonoBehaviour
 
             if (currentWayPoint >= wayPoints.Length)
             {
-                enemyBase.Despawn();
+                enemyBase.MoveEndPoint();
             }
         }
     }

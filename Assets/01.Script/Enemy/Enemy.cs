@@ -9,7 +9,8 @@ public class Enemy : MonoBehaviour
 
     protected float currentHP;
 
-    public static event Action<int> OnEnemyDeath;
+    public static event Action<int> OnEnemyDeadEvent;
+    public static event Action<int> OnEnemyMoveEndPointEvent;
 
     protected virtual void OnEnable()
     {
@@ -22,7 +23,7 @@ public class Enemy : MonoBehaviour
 
         if (currentHP <= 0)
         {
-            OnEnemyDeath?.Invoke(enemyData.dropCoins);
+            OnEnemyDeadEvent?.Invoke(enemyData.dropCoins);
             Die();
         }
 
@@ -30,6 +31,13 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Die()
     {
+        Despawn();
+    }
+
+    public void MoveEndPoint()
+    {
+        OnEnemyMoveEndPointEvent?.Invoke(enemyData.damage);
+
         Despawn();
     }
 

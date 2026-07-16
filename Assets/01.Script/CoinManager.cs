@@ -24,12 +24,12 @@ public class CoinManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Enemy.OnEnemyDeath += UpdateCoins;
+        Enemy.OnEnemyDeadEvent += UpdateCoins;
     }
 
     private void OnDisable()
     {
-        Enemy.OnEnemyDeath -= UpdateCoins;
+        Enemy.OnEnemyDeadEvent -= UpdateCoins;
     }
 
     public void UpdateCoins(int changeAmount)

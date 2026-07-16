@@ -15,6 +15,6 @@ MonoBehaviour:
   enemyName: BigMushRoom
   enemyPrefab: {fileID: 696189394087513901, guid: 77fb73a2faec31e47bf4c6e7fbe339e3, type: 3}
   hp: 20
-  damage: 2
   speed: 1
+  damage: 10
   dropCoins: 10

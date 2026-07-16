@@ -63,9 +63,16 @@ public class TowerPlacer : MonoBehaviour
         if(currentSelected != lastSelectedPrefab)
         {
             lastSelectedPrefab = currentSelected;
+
+            ghostSpriteRenderer.sprite = currentSelected.GetComponent<SpriteRenderer>().sprite;
+
+            cachedTowerName = currentSelected.name;
+
+            Tower towerComponent = currentSelected.GetComponent<Tower>();
+            cachedTowerCost = towerComponent != null ? towerComponent.Cost : 0;
         }
 
-        Vector3 mouseWroldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector3 mouseWroldPos = mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mouseWroldPos.z = 0f;
 
         Vector3Int cellPos = placementMap.WorldToCell(mouseWroldPos);
@@ -73,11 +80,8 @@ public class TowerPlacer : MonoBehaviour
         worldCenter.z = 0f;
 
         ghostInstance.transform.position = worldCenter + new Vector3(0, placementMap.cellSize.y * 0.25f);
-        ghostSpriteRenderer.sprite = TowerSelectionUI.selectedTowerPrefab.GetComponent<SpriteRenderer>().sprite;
 
-        Tower towerComponent = TowerSelectionUI.selectedTowerPrefab.GetComponent<Tower>();
-        int towerCost = towerComponent != null ? towerComponent.Cost : 0;
-        bool hasEnoughCost = CoinManager.instance.HasEnoughCoins(towerCost);
+        bool hasEnoughCost = CoinManager.instance.HasEnoughCoins(cachedTowerCost);
 
 
         bool isValid = placementMap.HasTile(cellPos)
@@ -90,9 +94,7 @@ public class TowerPlacer : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame && isValid)
         {
-            string towerName = TowerSelectionUI.selectedTowerPrefab.name;
-
-            GameObject tower = ObjectPoolManager.instance.GetObject(towerName);
+            GameObject tower = ObjectPoolManager.instance.GetObject(cachedTowerName);
 
             if (tower != null)
             {
@@ -100,7 +102,7 @@ public class TowerPlacer : MonoBehaviour
                 tower.transform.rotation = Quaternion.identity;
                 occupiedTiles.Add(cellPos);
 
-                CoinManager.instance.UpdateCoins(-towerCost);
+                CoinManager.instance.UpdateCoins(-cachedTowerCost);
             }
         }
     }
