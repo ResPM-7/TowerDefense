@@ -69,7 +69,7 @@ public class TowerPlacer : MonoBehaviour
             cachedTowerName = currentSelected.name;
 
             Tower towerComponent = currentSelected.GetComponent<Tower>();
-            cachedTowerCost = towerComponent != null ? towerComponent.Cost : 0;
+            cachedTowerCost = towerComponent != null ? towerComponent.TowerData.cost : 0;
         }
 
         Vector3 mouseWroldPos = mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue());

@@ -5,7 +5,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected TowerData towerData;
     [SerializeField] protected LayerMask enemyLayer = 1 << 6;
 
-    public int Cost { get { return towerData != null ? towerData.cost : 0; } }
+    public TowerData TowerData { get { return towerData; } }
 
     protected float currentCooldown = 0f;
 

@@ -36,6 +36,10 @@ public class HealthManager : MonoBehaviour
         health -= changeAmount;
         healthText.text = health.ToString();
 
-        if(health < 0) health = 0;
+        if (health < 0)
+        {
+            health = 0;
+            //Á×À¸¸é ·©Å© ±¸Çö ¿¹Á¤
+        }
     }
 }
