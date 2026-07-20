@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: WizardData_T1
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   towerName: WizardData_T1
-  towerPrefab: {fileID: 2495785808055566570, guid: ff474a0c6f2ea9b4bb40ddc9acf3263b, type: 3}
   cost: 10
   damage: 1
   attackRange: 3
   attackCooldown: 0.5
-  nextUpgradeData: {fileID: 0}
+  nextUpgradeData: {fileID: 11400000, guid: a16eb282e9c44514ea95afb20408681e, type: 2}

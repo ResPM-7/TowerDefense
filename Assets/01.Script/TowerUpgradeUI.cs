@@ -16,7 +16,6 @@ public class TowerUpgradeUI : MonoBehaviour
     private void Start()
     {
         HideUI();
-
         upgradeButton.onClick.AddListener(ExecuteUpgrade);
     }
 
@@ -32,11 +31,12 @@ public class TowerUpgradeUI : MonoBehaviour
             if (costText != null)
                 costText.text = nextUpgradeData.cost.ToString();
 
-            transform.position = targetTower.transform.position + offset;
+            uiPanel.transform.position = targetTower.transform.position + offset;
         }
         else
         {
-
+            //Debug.Log("업데이트 없음");\
+            //만약 업그레이드 없으면 출력할것
         }
     }
 
@@ -55,7 +55,7 @@ public class TowerUpgradeUI : MonoBehaviour
     {
         if (targetTower == null || nextUpgradeData == null) return;
 
-        int cost =nextUpgradeData.cost;
+        int cost = nextUpgradeData.cost;
         bool canbought = CoinManager.instance.HasEnoughCoins(cost);
 
         if (canbought)
@@ -64,13 +64,14 @@ public class TowerUpgradeUI : MonoBehaviour
 
             Vector3 pos = targetTower.transform.position;
             Quaternion rot = targetTower.transform.rotation;
-            string oldName = targetTower.name;
+
+            string oldName = targetTower.TowerData.towerName;
 
             ObjectPoolManager.instance.ReturnObject(oldName, targetTower.gameObject);
 
-            GameObject newTower = ObjectPoolManager.instance.GetObject(nextUpgradeData.towerPrefab.name);
+            GameObject newTower = ObjectPoolManager.instance.GetObject(nextUpgradeData.towerName);
 
-            if(newTower != null)
+            if (newTower != null)
             {
                 newTower.transform.position = pos;
                 newTower.transform.rotation = rot;
