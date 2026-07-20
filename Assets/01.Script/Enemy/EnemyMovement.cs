@@ -28,7 +28,7 @@ public class EnemyMovement : MonoBehaviour
 
         transform.position += dir * enemyBase.MoveSpeed* Time.deltaTime;
 
-        if(Vector3.Distance(transform.position, target.position) < 0.01f)
+        if(Vector3.Distance(transform.position, target.position) < 0.05f)
         {
             currentWayPoint++;
 

@@ -8,7 +8,6 @@ public class ObjectPoolManager : MonoBehaviour
     [System.Serializable]
     public struct CanvasPoolItem
     {
-        public string poolName;
         public GameObject prefab;
         public Transform targetCanvas;
     }
@@ -46,7 +45,7 @@ public class ObjectPoolManager : MonoBehaviour
 
         foreach(var item in canvasPools)
         {
-            SetupPool(item.poolName, item.prefab, item.targetCanvas, poolSize);
+            SetupPool(item.prefab.name, item.prefab, item.targetCanvas, poolSize);
         }
     }
 
@@ -94,7 +93,7 @@ public class ObjectPoolManager : MonoBehaviour
         if (obj != null) return obj;
 
         // 캔버스 리스트에서 찾기
-        CanvasPoolItem item = canvasPools.Find(x => x.poolName == name);
+        CanvasPoolItem item = canvasPools.Find(x => x.prefab.name == name);
         return item.prefab;
     }
 
