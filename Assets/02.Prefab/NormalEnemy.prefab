@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyData: {fileID: 11400000, guid: 634b53eaeb2490a4c851d9a69f4a4092, type: 2}
+  hpBarName: EnemyHPBar
 --- !u!114 &7158276315445678762
 MonoBehaviour:
   m_ObjectHideFlags: 0

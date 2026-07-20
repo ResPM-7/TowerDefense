@@ -5,16 +5,35 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;
 
-    public float MoveSpeed { get { return enemyData.speed; } }
+    [SerializeField] private string hpBarName;
 
-    protected float currentHP;
+    public float MoveSpeed { get { return enemyData.speed; } }
 
     public static event Action<int> OnEnemyDeadEvent;
     public static event Action<int> OnEnemyMoveEndPointEvent;
 
+    protected float currentHP;
+    private GameObject currentHPBar;
+
     protected virtual void OnEnable()
     {
         currentHP = enemyData.hp;
+        OnSpawn();
+    }
+
+    public void OnSpawn()
+    {
+        currentHPBar = ObjectPoolManager.instance.GetObject(hpBarName);
+
+        if (currentHPBar != null)
+        {
+            var follower = currentHPBar.GetComponent<HPBarFollower>();
+
+            if (follower != null)
+            {
+                follower.SetTarget(this.transform);
+            }
+        }
     }
 
     public virtual void TakeDamage(float damage)
