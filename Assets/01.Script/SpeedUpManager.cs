@@ -1,16 +1,29 @@
+using TMPro;
 using UnityEngine;
 
 public class SpeedUpManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private bool speedUp;
+    [SerializeField] private TextMeshProUGUI speedUpText;
+
+    private void Start()
     {
-        
+        speedUpText.text = "1x";
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ToggleSpeedUp()
     {
-        
+        speedUp = !speedUp;
+
+        if(speedUp)
+        {
+            Time.timeScale = 2f;
+            speedUpText.text = "2x";
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            speedUpText.text = "1x";
+        }    
     }
 }
