@@ -36,10 +36,15 @@ public class HealthManager : MonoBehaviour
         health -= changeAmount;
         healthText.text = health.ToString();
 
-        if (health < 0)
+        if (health <= 0)
         {
             health = 0;
-            //Á×À¸¸é ·©Å© ±¸Çö ¿¹Á¤
+
+            int finalWave = WaveManager.instance.CurrentWave;
+            int finalScore = ScoreManager.instance.currentScore;
+
+            GameOverUIManager.instance.ShowGameOver(finalWave, finalScore);
         }
     }
+
 }

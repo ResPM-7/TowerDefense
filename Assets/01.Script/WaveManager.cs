@@ -12,6 +12,8 @@ public class WaveData
 
 public class WaveManager : MonoBehaviour
 {
+    public static WaveManager instance;
+
     [SerializeField] private WaveData[] waves;
 
     [SerializeField] private string normalEnemyName;
@@ -20,8 +22,18 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private Transform[] wayPoints;
 
     private int currentWaveIndex = 0;
+    public int CurrentWave { get { return currentWaveIndex; } }
+
     private bool waveRunning = false;
 
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     public void StartWave()
     {

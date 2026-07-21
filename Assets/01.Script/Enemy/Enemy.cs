@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -7,13 +8,16 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private string hpBarName;
 
-    public float MoveSpeed { get { return enemyData.speed; } }
+    public EnemyData EnemyData { get { return enemyData; } }
+    //public float MoveSpeed { get { return enemyData.speed; } }
 
     public static event Action<int> OnEnemyDeadEvent;
     public static event Action<int> OnEnemyMoveEndPointEvent;
 
     protected float currentHP;
     private GameObject currentHPBar;
+
+    private Slider hpSlider;
 
     protected virtual void OnEnable()
     {
@@ -32,6 +36,12 @@ public class Enemy : MonoBehaviour
             if (follower != null)
             {
                 follower.SetTarget(this.transform);
+
+                hpSlider = follower.GetSlider();
+                if(hpSlider != null)
+                {
+                    hpSlider.value = currentHP / enemyData.hp;
+                }
             }
         }
     }
@@ -40,9 +50,15 @@ public class Enemy : MonoBehaviour
     {
         currentHP -= damage;
 
+        if(hpSlider != null)
+        {
+            hpSlider.value = currentHP / enemyData.hp;
+        }
+
         if (currentHP <= 0)
         {
             OnEnemyDeadEvent?.Invoke(enemyData.dropCoins);
+            ScoreManager.instance.AddScore(enemyData.score);
             Die();
         }
 
@@ -62,6 +78,13 @@ public class Enemy : MonoBehaviour
 
     public void Despawn()
     {
+        if (currentHPBar != null)
+        {
+            ObjectPoolManager.instance.ReturnObject(currentHPBar.name, currentHPBar.gameObject);
+            currentHPBar = null;
+            hpSlider = null;
+        }
+
         ObjectPoolManager.instance.ReturnObject(gameObject.name, gameObject);
     }
 }

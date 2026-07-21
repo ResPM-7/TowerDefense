@@ -4,21 +4,31 @@ using UnityEngine.SceneManagement;
 
 public class SceneChangeManager : MonoBehaviour
 {
-    [SerializeField] private int gameSceneIndex=1;
+    public static SceneChangeManager instance;
 
-    public void LoadScene()
+    private void Awake()
     {
-        SceneManager.LoadScene(gameSceneIndex);
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
-    public void LoadSceneOptimized()
+    public void LoadScene(int index)
     {
-        StartCoroutine(LoadSceneAsyncCoroutine());
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(index);
+    }
+
+    public void LoadSceneOptimized(int index)
+    {
+        StartCoroutine(LoadSceneAsyncCoroutine(index));
     }    
 
-    private IEnumerator LoadSceneAsyncCoroutine()
+    private IEnumerator LoadSceneAsyncCoroutine(int index)
     {
-        AsyncOperation op = SceneManager.LoadSceneAsync(gameSceneIndex);
+        AsyncOperation op = SceneManager.LoadSceneAsync(index);
 
         while (op != null)
         {

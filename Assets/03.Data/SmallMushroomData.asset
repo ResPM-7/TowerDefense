@@ -16,5 +16,6 @@ MonoBehaviour:
   enemyPrefab: {fileID: 696189394087513901, guid: a4eb697389cccfc469beaf2e5bfa5465, type: 3}
   hp: 4
   speed: 2
-  damage: 5
+  damage: 100
   dropCoins: 5
+  score: 10

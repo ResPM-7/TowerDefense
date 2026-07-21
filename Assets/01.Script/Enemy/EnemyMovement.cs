@@ -1,7 +1,7 @@
 using UnityEngine;
 
 //이 스크립트를 넣으면 자동으로 Enemy도 같이 추가
-[RequireComponent (typeof(Enemy))]
+[RequireComponent(typeof(Enemy))]
 public class EnemyMovement : MonoBehaviour
 {
     public Transform[] wayPoints;
@@ -26,9 +26,9 @@ public class EnemyMovement : MonoBehaviour
         Transform target = wayPoints[currentWayPoint];
         Vector3 dir = (target.position - transform.position).normalized;
 
-        transform.position += dir * enemyBase.MoveSpeed* Time.deltaTime;
+        transform.position += dir * enemyBase.EnemyData.speed * Time.deltaTime;
 
-        if(Vector3.Distance(transform.position, target.position) < 0.05f)
+        if (Vector3.Distance(transform.position, target.position) < 0.05f)
         {
             currentWayPoint++;
 
