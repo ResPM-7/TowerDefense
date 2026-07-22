@@ -40,7 +40,7 @@ public class RankingUI : MonoBehaviour
             if (i < rankList.entries.Count)
             {
                 RankEntry entry = rankList.entries[i];
-                rankTexts[i].text = $"{i + 1}. {entry.playerName} | Wave {entry.wave} | {entry.score}Á¡";
+                rankTexts[i].text = $"{i + 1}. Wave {entry.wave} | {entry.score}Á¡";
                 rankTexts[i].gameObject.SetActive(true);
             }
             else

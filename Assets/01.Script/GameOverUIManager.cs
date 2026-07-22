@@ -49,7 +49,7 @@ public class GameOverUIManager : MonoBehaviour
 
         if (RankingManager.Instance != null)
         { 
-            RankingManager.Instance.AddRankAndSave("Player", finalWave, finalScore);
+            RankingManager.Instance.AddRankAndSave(finalWave, finalScore);
         }
 
         Time.timeScale = 0f;

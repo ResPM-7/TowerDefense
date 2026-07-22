@@ -33,11 +33,11 @@ public class RankingManager : MonoBehaviour
         }
     }
 
-    public void AddRankAndSave(string playerName, int wave, int score)
+    public void AddRankAndSave(int wave, int score)
     {
         RankList currentRanking = LoadRanking();
 
-        currentRanking.entries.Add(new RankEntry(playerName, wave, score));
+        currentRanking.entries.Add(new RankEntry( wave, score));
 
         //상위 10개만 자르기
         currentRanking.entries = currentRanking.entries
@@ -49,6 +49,6 @@ public class RankingManager : MonoBehaviour
 
         File.WriteAllText(savePath, json);
 
-        Debug.Log(savePath);
+        //Debug.Log(savePath);
     }
 }
