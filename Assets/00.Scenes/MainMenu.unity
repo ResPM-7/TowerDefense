@@ -157,7 +157,7 @@ Transform:
   m_GameObject: {fileID: 9017245}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 360.5813, y: 210.9982, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -233,7 +233,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitleButton
   playButton: {fileID: 1776662413}
-  rankingButton: {fileID: 1896623069}
 --- !u!1 &126595226
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class RankingManager : MonoBehaviour
 {
-    public static RankingManager Instance;
+    public static RankingManager instance;
 
     private string savePath;
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
+        if (instance == null)
+            instance = this;
         else
             Destroy(gameObject);
 

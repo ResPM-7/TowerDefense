@@ -73,7 +73,7 @@ public class WaveManager : MonoBehaviour
 
     }
 
-    void SpawnEnemy(string name)
+    public void SpawnEnemy(string name)
     {
         GameObject ob = ObjectPoolManager.instance.GetObject(name);
         if (ob != null)

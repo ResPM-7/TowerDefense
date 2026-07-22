@@ -11,6 +11,8 @@ public class GameOverUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private Button titleButton;
 
+    private RectTransform panelRect;
+
     private void Awake()
     {
         if (instance == null)
@@ -32,10 +34,14 @@ public class GameOverUIManager : MonoBehaviour
         {
             titleButton.onClick.AddListener(GoToTitle);
         }
+
+        panelRect = gameOverPanel.GetComponent<RectTransform>();
     }
 
     public void ShowGameOver(int finalWave, int finalScore)
     {
+        panelRect.SetAsLastSibling();
+
         gameOverPanel.SetActive(true);
 
         gameOverPanel.transform.DOScale(Vector3.one, 0.5f)
@@ -47,9 +53,9 @@ public class GameOverUIManager : MonoBehaviour
             resultText.text = $"도달한 웨이브: Wave {finalWave}\n 최종 점수: {finalScore} 점";
         }
 
-        if (RankingManager.Instance != null)
+        if (RankingManager.instance != null)
         { 
-            RankingManager.Instance.AddRankAndSave(finalWave, finalScore);
+            RankingManager.instance.AddRankAndSave(finalWave, finalScore);
         }
 
         Time.timeScale = 0f;
@@ -57,8 +63,6 @@ public class GameOverUIManager : MonoBehaviour
 
     public void GoToTitle()
     {
-        Time.timeScale = 0f;
-
         if (SceneChangeManager.instance != null)
         {
             SceneChangeManager.instance.LoadScene(0);

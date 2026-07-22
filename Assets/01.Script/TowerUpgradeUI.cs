@@ -77,7 +77,7 @@ public class TowerUpgradeUI : MonoBehaviour
                 newTower.transform.rotation = rot;
             }
 
-            TowerSelector.Instance.DeselectTower();
+            TowerSelector.instance.DeselectTower();
         }
     }
 }

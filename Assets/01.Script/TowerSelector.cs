@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class TowerSelector : MonoBehaviour
 {
-    public static TowerSelector Instance;
+    public static TowerSelector instance;
 
     [SerializeField] private TowerUpgradeUI upgradeUI;
     [SerializeField] private Transform rangeIndicator;
@@ -13,8 +13,8 @@ public class TowerSelector : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
+        if (instance == null)
+            instance = this;
         else
             Destroy(gameObject);
     }
