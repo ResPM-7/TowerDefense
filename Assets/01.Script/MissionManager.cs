@@ -1,21 +1,54 @@
+using System;
 using UnityEngine;
+
 
 public class MissionManager : MonoBehaviour
 {
-    [SerializeField] private string[] missionEnemyName;
-    [SerializeField] private int[] spawnCost;
+    [Header("미션관리")]
+    public static MissionManager instance;
 
-    public void SpawnMissionEnemy(int i)
+    [SerializeField] private MissionData[] missions;
+
+    private void Awake()
     {
-        if (missionEnemyName != null && i < missionEnemyName.Length)
-        {
-            int cost = (spawnCost != null && i < spawnCost.Length) ? spawnCost[i] : 0;
+        if(instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
 
-            if (CoinManager.instance.HasEnoughCoins(cost))
+    public float GetMissionCooldown(int index)
+    {
+        if(missions != null && index >= 0 && index < missions.Length)
+        {
+            return missions[index].cooldown;
+        }
+        return 0;
+    }
+
+    public int GetMissionCost(int index)
+    {
+        if (missions != null && index >= 0 && index < missions.Length)
+        {
+            return missions[index].cost;
+        }
+        return 0;
+    }
+
+    public bool SpawnMissionEnemy(int index)
+    {
+        if (missions != null && index >=0 && index <missions.Length )
+        {
+            MissionData data = missions[index];
+
+            if (CoinManager.instance.HasEnoughCoins(data.cost))
             {
-                CoinManager.instance.UpdateCoins(-cost);
-                WaveManager.instance.SpawnEnemy(missionEnemyName[i]);
+                CoinManager.instance.UpdateCoins(-data.cost);
+                WaveManager.instance.SpawnEnemy(data.enemyData.enemyName);
+
+                return true;
             }
         }
+        return false;
     }
 }

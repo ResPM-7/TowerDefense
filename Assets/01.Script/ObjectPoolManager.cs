@@ -30,7 +30,7 @@ public class ObjectPoolManager : MonoBehaviour
 
     Dictionary<string, Transform> poolParents = new Dictionary<string, Transform>();
 
-    //private int poolSize = 5;
+    private Dictionary<string, GameObject> prefabDict = new Dictionary<string, GameObject>();
 
     private void Awake()
     {
@@ -44,6 +44,8 @@ public class ObjectPoolManager : MonoBehaviour
     {
         foreach (var item in objList)
         {
+            prefabDict[item.prefab.name] = item.prefab;
+
             pools[item.prefab.name] = new Queue<GameObject>();
 
             GameObject parentPool = new GameObject($"{item.prefab.name}_Pool");
@@ -54,6 +56,8 @@ public class ObjectPoolManager : MonoBehaviour
 
         foreach (var item in canvasPools)
         {
+            prefabDict[item.prefab.name] = item.prefab;
+
             SetupPool(item.prefab.name, item.prefab, item.targetCanvas, item.poolSize);
         }
     }
@@ -89,7 +93,7 @@ public class ObjectPoolManager : MonoBehaviour
         {
             GameObject prefab = GetPrefabFromList(name);
             GameObject go = Instantiate(prefab, poolParents[name]);
-            go.name = prefab.name;
+            go.name = name;
             go.SetActive(true);
             return go;
         }
@@ -97,13 +101,19 @@ public class ObjectPoolManager : MonoBehaviour
 
     private GameObject GetPrefabFromList(string name)
     {
-        // 일반 리스트에서 찾기
-        ObjectPoolItem op = objList.Find(x => x.prefab.name == name);
-        if (op.prefab != null) return op.prefab;
+        //// 일반 리스트에서 찾기
+        //// 
+        //ObjectPoolItem op = objList.Find(x => x.prefab.name == name);
+        //if (op.prefab != null) return op.prefab;
 
-        // 캔버스 리스트에서 찾기
-        CanvasPoolItem item = canvasPools.Find(x => x.prefab.name == name);
-        if (item.prefab != null) return item.prefab;
+        //// 캔버스 리스트에서 찾기
+        //CanvasPoolItem item = canvasPools.Find(x => x.prefab.name == name);
+        //if (item.prefab != null) return item.prefab;
+
+        if(prefabDict.TryGetValue(name, out GameObject prefab))
+        {
+            return prefab;
+        }
 
         return null;
     }
