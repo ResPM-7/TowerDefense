@@ -18,6 +18,8 @@ public class CoinManager : MonoBehaviour
 
     private void Start()
     {
+        coins = 10;
+
         UpdateCoins(0);
     }
 

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: SmallMushroom
   enemyPrefab: {fileID: 696189394087513901, guid: a4eb697389cccfc469beaf2e5bfa5465, type: 3}
-  hp: 4
+  hp: 3
   speed: 2
-  damage: 100
+  damage: 5
   dropCoins: 5
   score: 10

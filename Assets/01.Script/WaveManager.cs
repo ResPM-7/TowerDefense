@@ -1,13 +1,22 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
+public class SpawnGroup
+{
+    public string enemyName;
+    public int count;
+    public float spawnInterval = 1f;
+}
+
+[System.Serializable]
 public class WaveData
 {
-    public float duration = 10f;
-    public int normalEnemy = 5;
-    public int specialEnemy = 2;
+    public SpawnGroup[] spawnGroups;
+
+    public float timeToNextWave = 10f;
 }
 
 public class WaveManager : MonoBehaviour
@@ -16,15 +25,19 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] private WaveData[] waves;
 
-    [SerializeField] private string normalEnemyName;
-    [SerializeField] private string specialEnemyName;
-
     [SerializeField] private Transform[] wayPoints;
+
+    [SerializeField] private TextMeshProUGUI waveNumberText;
+    [SerializeField] private TextMeshProUGUI countdownText;
+
+    [SerializeField] private Button startWaveButton;
 
     private int currentWaveIndex = 0;
     public int CurrentWave { get { return currentWaveIndex; } }
 
     private bool waveRunning = false;
+    private bool isWaitingForNextWave = false;
+    private Coroutine countdownCoroutine;
 
 
     private void Awake()
@@ -35,10 +48,31 @@ public class WaveManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    private void Start()
+    {
+        UpdateWaveUI();
+        if (countdownText != null)
+        {
+            countdownText.text = "대기 중";
+            countdownText.gameObject.SetActive(true);
+        }
+        if (startWaveButton != null)
+        {
+            startWaveButton.onClick.RemoveAllListeners();
+            startWaveButton.onClick.AddListener(StartWave);
+        }
+    }
+
     public void StartWave()
     {
-        if (waveRunning) return;
         if (currentWaveIndex >= waves.Length) return;
+
+        if (waveRunning) return;
+        if (isWaitingForNextWave && countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+            isWaitingForNextWave = false;
+        }
 
         StartCoroutine(RunWave());
     }
@@ -46,35 +80,100 @@ public class WaveManager : MonoBehaviour
     IEnumerator RunWave()
     {
         waveRunning = true;
+        isWaitingForNextWave = false;
+
+        UpdateWaveUI();
+
+        if (countdownText != null)
+        {
+            countdownText.gameObject.SetActive(false);
+        }
 
         WaveData wave = waves[currentWaveIndex];
-        //일반 몬스터 안나오고 스페셜 몬스터만 나올수 있기 때문  나누기 0 이면 무한대이기 때문
-        float normalDelayTime = wave.normalEnemy > 0 ? (wave.duration / 3f) / wave.normalEnemy : 0f;
-        WaitForSeconds normalWait = new WaitForSeconds(normalDelayTime);
-        //마찬가지
-        float specialDelayTime = wave.specialEnemy > 0 ? (wave.duration / 3f) / wave.specialEnemy : 0f;
-        WaitForSeconds specialWait = new WaitForSeconds(specialDelayTime);
 
-        for (int i = 0; i < wave.normalEnemy; i++)
+        if(wave.spawnGroups != null)
         {
-            SpawnEnemy(normalEnemyName);
-            yield return normalWait;
+            foreach (SpawnGroup group in wave.spawnGroups)
+            {
+                WaitForSeconds wait = new WaitForSeconds(group.spawnInterval);
+
+                for(int i= 0; i<group.count; i++)
+                {
+                    SpawnEnemy(group.enemyName);
+                    yield return wait;
+                }
+            }
         }
 
-        for (int i = 0; i < wave.specialEnemy; i++)
-        {
-            SpawnEnemy(specialEnemyName);
-            yield return specialWait;
-        }
-
-        yield return specialWait;
-        currentWaveIndex++;
         waveRunning = false;
+        currentWaveIndex++;
+        UpdateWaveUI();
 
+        if (currentWaveIndex < waves.Length)
+        {
+            countdownCoroutine = StartCoroutine(WaitForNextWave(wave.timeToNextWave));
+        }
+        else
+        {
+            if (countdownText != null)
+            {
+                countdownText.text = "모든 웨이브 클리어";
+                countdownText.gameObject.SetActive(true);
+            }
+            if (startWaveButton != null)
+            {
+                startWaveButton.interactable = false;
+            }
+
+        }
+
+    }
+
+    IEnumerator WaitForNextWave(float waitTime)
+    {
+        isWaitingForNextWave = true;
+        float timer = waitTime;
+
+        if (countdownText != null)
+        {
+            countdownText.gameObject.SetActive(true);
+        }
+
+        while (timer > 0f)
+        {
+            if (countdownText != null)
+            {
+                countdownText.text = $"다음 웨이브까지: {timer:F1}초";
+            }
+
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        if (countdownText != null)
+        {
+            countdownText.text = "웨이브 시작!";
+        }
+
+        isWaitingForNextWave = false;
+        StartWave();
+    }
+
+    // UI 업데이트 헬퍼 함수
+    private void UpdateWaveUI()
+    {
+        if (waveNumberText != null)
+        {
+            
+            int displayWave = Mathf.Min(currentWaveIndex + 1, waves.Length);
+            waveNumberText.text = $"Wave {displayWave}";
+        }
     }
 
     public void SpawnEnemy(string name)
     {
+        if (string.IsNullOrEmpty(name)) return;
+
         GameObject ob = ObjectPoolManager.instance.GetObject(name);
         if (ob != null)
         {

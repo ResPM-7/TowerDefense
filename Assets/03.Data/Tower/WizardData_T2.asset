@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23dcb12d27eae84592a12d97aa5894c, type: 3}
   m_Name: WizardData_T2
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerName: WizardData_T2
+  towerName: Wizard_T2
   cost: 20
   damage: 2
   attackRange: 3.2

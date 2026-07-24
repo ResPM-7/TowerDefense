@@ -27,7 +27,26 @@ public class TowerPlacer : MonoBehaviour
 
     private void Update()
     {
+        if(Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            CancelPlacement();
+        }
+
         HandlePlacement();
+    }
+
+    private void CancelPlacement()
+    {
+        TowerSelectionUI.selectedTowerPrefab = null;
+
+        if(ghostPrefab != null && ghostPrefab.activeSelf)
+        {
+            ghostPrefab.SetActive(false);
+        }
+
+        lastSelectedPrefab = null;
+        cachedTowerCost = 0;
+        cachedTowerName = "";
     }
 
     void HandlePlacement()
