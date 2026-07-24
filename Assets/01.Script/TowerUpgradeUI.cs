@@ -35,8 +35,7 @@ public class TowerUpgradeUI : MonoBehaviour
         }
         else
         {
-            //Debug.Log("업데이트 없음");\
-            //만약 업그레이드 없으면 출력할것
+            uiPanel.SetActive(false);
         }
     }
 
