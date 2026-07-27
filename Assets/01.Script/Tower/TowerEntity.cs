@@ -1,7 +1,7 @@
 [System.Serializable]
 public class TowerEntity
 {
-    public int Number;
+    public int number;
     public string towerName;
 
     public int cost;

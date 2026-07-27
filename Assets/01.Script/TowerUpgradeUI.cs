@@ -11,7 +11,7 @@ public class TowerUpgradeUI : MonoBehaviour
 
     [SerializeField] private Vector3 offset = new Vector3(0, -1f, 0);
 
-    [SerializeField] private TowerDB towerDB;
+    [SerializeField] private TowerDefenseDB towerDB;
 
     private Tower targetTower;
 
@@ -32,7 +32,7 @@ public class TowerUpgradeUI : MonoBehaviour
 
         if(currentData.nextUpgradeDataNum != 0)
         {
-            nextUpgradeData = towerDB.Tower.FirstOrDefault(t=>t.Number == currentData.nextUpgradeDataNum);
+            nextUpgradeData = towerDB.Tower.FirstOrDefault(t=>t.number == currentData.nextUpgradeDataNum);
         }
         else
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 
@@ -7,46 +8,55 @@ public class MissionManager : MonoBehaviour
     [Header("미션관리")]
     public static MissionManager instance;
 
-    [SerializeField] private MissionData[] missions;
+    [SerializeField] private TowerDefenseDB missionDB;
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
             instance = this;
         else
             Destroy(gameObject);
     }
 
-    public float GetMissionCooldown(int index)
+    public float GetMissionCooldown(int missionNum)
     {
-        if(missions != null && index >= 0 && index < missions.Length)
+        if (missionDB != null && missionDB.Mission != null)
         {
-            return missions[index].cooldown;
+            var data = missionDB.Mission.FirstOrDefault(m => m.number == missionNum);
+            if (data != null) return data.cooldown;
         }
         return 0;
     }
 
-    public int GetMissionCost(int index)
+    public int GetMissionCost(int missionNum)
     {
-        if (missions != null && index >= 0 && index < missions.Length)
+        if (missionDB != null && missionDB.Mission != null)
         {
-            return missions[index].cost;
+            var data = missionDB.Mission.FirstOrDefault(m => m.number == missionNum);
+            if (data != null) return data.cost;
         }
         return 0;
     }
 
-    public bool SpawnMissionEnemy(int index)
+    public bool SpawnMissionEnemy(int missionNum)
     {
-        if (missions != null && index >=0 && index <missions.Length )
-        {
-            MissionData data = missions[index];
+        if (missionDB == null) return false;
 
-            if (CoinManager.instance.HasEnoughCoins(data.cost))
+        var missionData = missionDB.Mission.FirstOrDefault(m => m.number == missionNum);
+
+        if (missionData != null)
+        {
+            if (CoinManager.instance.HasEnoughCoins(missionData.cost))
             {
-                CoinManager.instance.UpdateCoins(-data.cost);
-                WaveManager.instance.SpawnEnemy(data.enemyData.enemyName);
+                var enemyData = missionDB.Enemy.FirstOrDefault(m => m.number == missionData.monsterSpawnNumber);
 
-                return true;
+                if (enemyData != null)
+                {
+                    CoinManager.instance.UpdateCoins(-missionData.cost);
+                    WaveManager.instance.SpawnEnemy(enemyData.enemyName);
+                    return true;
+                }
+
             }
         }
         return false;

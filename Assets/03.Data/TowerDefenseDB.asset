@@ -10,48 +10,82 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b31ef606edaf44e8e60d5d13719e5b, type: 3}
-  m_Name: TowerDB
+  m_Name: TowerDefenseDB
   m_EditorClassIdentifier: Assembly-CSharp::TowerDB
   Tower:
-  - Number: 100
+  - number: 100
     towerName: Archer_T1
     cost: 5
     damage: 2
     attackRange: 3
     attackCooldown: 1.5
     nextUpgradeDataNum: 101
-  - Number: 101
+  - number: 101
     towerName: Archer_T2
     cost: 10
     damage: 4
     attackRange: 3.2
     attackCooldown: 1.2
     nextUpgradeDataNum: 102
-  - Number: 102
+  - number: 102
     towerName: Archer_T3
     cost: 20
     damage: 6
     attackRange: 3.5
     attackCooldown: 1
     nextUpgradeDataNum: 0
-  - Number: 200
+  - number: 200
     towerName: Wizard_T1
     cost: 10
     damage: 1
     attackRange: 3
     attackCooldown: 0.5
     nextUpgradeDataNum: 201
-  - Number: 201
+  - number: 201
     towerName: Wizard_T2
     cost: 20
     damage: 2
     attackRange: 3.2
     attackCooldown: 0.45
     nextUpgradeDataNum: 202
-  - Number: 202
+  - number: 202
     towerName: Wizard_T3
     cost: 20
     damage: 2.5
     attackRange: 3.5
     attackCooldown: 0.3
     nextUpgradeDataNum: 0
+  Enemy:
+  - number: 100
+    enemyName: SmallMushroom
+    hp: 3
+    speed: 2
+    damage: 5
+    dropCoins: 5
+    score: 10
+  - number: 101
+    enemyName: BigMushRoom
+    hp: 20
+    speed: 1
+    damage: 10
+    dropCoins: 10
+    score: 20
+  - number: 200
+    enemyName: SlimeKing
+    hp: 50
+    speed: 1
+    damage: 20
+    dropCoins: 10
+    score: 20
+  - number: 999
+    enemyName: GameOverMonster
+    hp: 999999
+    speed: 1.5
+    damage: 10000
+    dropCoins: 0
+    score: 0
+  Mission:
+  - number: 1
+    monsterSpawnNumber: 200
+    cost: 5
+    cooldown: 20

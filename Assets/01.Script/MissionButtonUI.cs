@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class MissionButtonUI : MonoBehaviour
 {
-    [SerializeField] private int missionIndex;
+    [SerializeField] private int missionNumber;
     [SerializeField] private Image coolTimeImg;
     [SerializeField] private TextMeshProUGUI missionCostText;
 
@@ -27,7 +27,7 @@ public class MissionButtonUI : MonoBehaviour
 
         if (missionCostText != null)
         {
-            int cost = MissionManager.instance.GetMissionCost(missionIndex);
+            int cost = MissionManager.instance.GetMissionCost(missionNumber);
             missionCostText.text = cost.ToString();
         }
     }
@@ -56,13 +56,13 @@ public class MissionButtonUI : MonoBehaviour
     {
         if (isCooldown || MissionManager.instance == null) return;
 
-        bool isSuccess = MissionManager.instance.SpawnMissionEnemy(missionIndex);
+        bool isSuccess = MissionManager.instance.SpawnMissionEnemy(missionNumber);
 
         if (isSuccess)
         {
             isCooldown = true;
 
-            maxCoolTime = MissionManager.instance.GetMissionCooldown(missionIndex);
+            maxCoolTime = MissionManager.instance.GetMissionCooldown(missionNumber);
             currentCoolTime = maxCoolTime;
 
             if (coolTimeImg != null) coolTimeImg.fillAmount = 1f;

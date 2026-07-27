@@ -89,7 +89,24 @@ public class TowerPlacer : MonoBehaviour
             cachedTowerName = currentSelected.name;
 
             Tower towerComponent = currentSelected.GetComponent<Tower>();
-            cachedTowerCost = towerComponent != null ? towerComponent.TowerData.cost : 0;
+            if (towerComponent == null) { Debug.LogError("타워 컴포넌트가 없습니다."); }
+            else
+            {
+                Debug.Log($"1. 타워 컴포넌트를 찾았습니다: {towerComponent.gameObject.name}");
+                Debug.Log($"2. 이 타워에 세팅된 myTowerNumber 값: {towerComponent.myTowerNumber}"); // Wait, myTowerNumber is protected. Can't access it easily here unless we make a getter.
+
+                TowerEntity data = towerComponent.TowerData;
+                if (data == null)
+                {
+                    Debug.LogError("3. TowerData를 가져왔으나 NULL입니다! DB검색에 실패했습니다.");
+                }
+                else
+                {
+                    Debug.Log($"3. TowerData 검색 성공! Entity Number: {data.number}, Name: {data.towerName}");
+                    Debug.Log($"4. 최종 Cost 값: {data.cost}");
+                    cachedTowerCost = data.cost;
+                }
+            }
         }
 
         Vector3 mouseWroldPos = mainCam.ScreenToWorldPoint(Mouse.current.position.ReadValue());

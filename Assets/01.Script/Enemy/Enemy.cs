@@ -1,15 +1,18 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private EnemyData enemyData;
+    //[SerializeField] private EnemyData enemyData;
+    [SerializeField] private TowerDefenseDB enemyDB;
+    [SerializeField] private int myEnemyNumber;
 
     [SerializeField] private string hpBarName;
 
-    public EnemyData EnemyData { get { return enemyData; } }
-    //public float MoveSpeed { get { return enemyData.speed; } }
+    protected EnemyEntity myEnemyData;
+    public EnemyEntity EnemyData { get { return myEnemyData; } }
 
     public static event Action<int> OnEnemyDeadEvent;
     public static event Action<int> OnEnemyMoveEndPointEvent;
@@ -19,9 +22,22 @@ public class Enemy : MonoBehaviour
 
     private Slider hpSlider;
 
+    private void Awake()
+    {
+        InitializeData();
+    }
+
+    protected void InitializeData()
+    {
+        if(enemyDB != null && enemyDB.Enemy != null)
+        {
+            myEnemyData = enemyDB.Enemy.FirstOrDefault(e =>e.number == myEnemyNumber);
+        }
+    }
+
     protected virtual void OnEnable()
     {
-        currentHP = enemyData.hp;
+        currentHP = myEnemyData.hp;
         OnSpawn();
     }
 
@@ -40,7 +56,7 @@ public class Enemy : MonoBehaviour
                 hpSlider = follower.GetSlider();
                 if(hpSlider != null)
                 {
-                    hpSlider.value = currentHP / enemyData.hp;
+                    hpSlider.value = currentHP / myEnemyData.hp;
                 }
             }
         }
@@ -52,13 +68,13 @@ public class Enemy : MonoBehaviour
 
         if(hpSlider != null)
         {
-            hpSlider.value = currentHP / enemyData.hp;
+            hpSlider.value = currentHP / myEnemyData.hp;
         }
 
         if (currentHP <= 0)
         {
-            OnEnemyDeadEvent?.Invoke(enemyData.dropCoins);
-            ScoreManager.instance.AddScore(enemyData.score);
+            OnEnemyDeadEvent?.Invoke(myEnemyData.dropCoins);
+            ScoreManager.instance.AddScore(myEnemyData.score);
             Die();
         }
 
@@ -71,7 +87,7 @@ public class Enemy : MonoBehaviour
 
     public void MoveEndPoint()
     {
-        OnEnemyMoveEndPointEvent?.Invoke(enemyData.damage);
+        OnEnemyMoveEndPointEvent?.Invoke(myEnemyData.damage);
 
         Despawn();
     }

@@ -3,13 +3,27 @@ using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
 {
-    [SerializeField] protected TowerDB towerDB;
-    [SerializeField] protected int myTowerNumber;
+    [SerializeField] protected TowerDefenseDB towerDB;
+    [SerializeField] public int myTowerNumber;
     [SerializeField] protected LayerMask enemyLayer = 1 << 6;
 
     protected TowerEntity myTowerData;
 
-    public TowerEntity TowerData { get { return myTowerData; } }
+    public TowerEntity TowerData
+    {
+        get
+        {
+            // ★ 수정됨: myTowerData가 Null이거나, 유니티가 만든 가짜 껍데기(number가 0)라면 무조건 DB에서 다시 찾습니다!!!
+            if (myTowerData == null || myTowerData.number == 0)
+            {
+                if (towerDB != null && towerDB.Tower != null)
+                {
+                    myTowerData = towerDB.Tower.FirstOrDefault(t => t.number == myTowerNumber);
+                }
+            }
+            return myTowerData;
+        }
+    }
 
     protected float currentCooldown = 0f;
 
@@ -22,7 +36,7 @@ public abstract class Tower : MonoBehaviour
     {
         if(towerDB != null && towerDB.Tower != null)
         {
-            myTowerData = towerDB.Tower.FirstOrDefault(t => t.Number == myTowerNumber);
+            myTowerData = towerDB.Tower.FirstOrDefault(t => t.number == myTowerNumber);
         }
     }
 

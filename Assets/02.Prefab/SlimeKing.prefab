@@ -106,7 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0ba9f6338a540408ff8ca9eb18ffbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpecialEnemy
-  enemyData: {fileID: 11400000, guid: f843653c9567a7d4e9569f1fa5d2a408, type: 2}
+  enemyDB: {fileID: 11400000, guid: 6a1b3e70690f26b46a8de6e942809709, type: 2}
+  myEnemyNumber: 200
   hpBarName: EnemyHPBar
 --- !u!114 &2687633470756784794
 MonoBehaviour:
