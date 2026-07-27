@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class Tower : MonoBehaviour
 {
     [SerializeField] protected TowerDefenseDB towerDB;
-    [SerializeField] public int myTowerNumber;
+    [SerializeField] protected int myTowerNumber;
     [SerializeField] protected LayerMask enemyLayer = 1 << 6;
 
     protected TowerEntity myTowerData;

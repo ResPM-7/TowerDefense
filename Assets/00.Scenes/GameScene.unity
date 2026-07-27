@@ -1459,7 +1459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a65e600bf377349bb3221e7ff93e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionButtonUI
-  missionNumber: 0
+  missionNumber: 1
   coolTimeImg: {fileID: 645863579}
   missionCostText: {fileID: 820940483}
 --- !u!1 &591069527
