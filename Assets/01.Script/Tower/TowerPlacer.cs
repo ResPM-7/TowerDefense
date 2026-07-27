@@ -47,6 +47,7 @@ public class TowerPlacer : MonoBehaviour
         lastSelectedPrefab = null;
         cachedTowerCost = 0;
         cachedTowerName = "";
+
     }
 
     void HandlePlacement()

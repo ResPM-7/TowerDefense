@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,8 +11,11 @@ public class TowerUpgradeUI : MonoBehaviour
 
     [SerializeField] private Vector3 offset = new Vector3(0, -1f, 0);
 
+    [SerializeField] private TowerDB towerDB;
+
     private Tower targetTower;
-    private TowerData nextUpgradeData;
+
+    private TowerEntity nextUpgradeData;
 
     private void Start()
     {
@@ -22,7 +26,18 @@ public class TowerUpgradeUI : MonoBehaviour
     public void SetTargetTower(Tower tower)
     {
         targetTower = tower;
-        nextUpgradeData = tower.TowerData.nextUpgradeData;
+        TowerEntity currentData = tower.TowerData;
+
+        if (currentData == null || towerDB == null) return;
+
+        if(currentData.nextUpgradeDataNum != 0)
+        {
+            nextUpgradeData = towerDB.Tower.FirstOrDefault(t=>t.Number == currentData.nextUpgradeDataNum);
+        }
+        else
+        {
+            nextUpgradeData = null;
+        }
 
         if (nextUpgradeData != null)
         {

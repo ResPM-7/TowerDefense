@@ -1,16 +1,35 @@
+using System.Linq;
 using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
 {
-    [SerializeField] protected TowerData towerData;
+    [SerializeField] protected TowerDB towerDB;
+    [SerializeField] protected int myTowerNumber;
     [SerializeField] protected LayerMask enemyLayer = 1 << 6;
 
-    public TowerData TowerData { get { return towerData; } }
+    protected TowerEntity myTowerData;
+
+    public TowerEntity TowerData { get { return myTowerData; } }
 
     protected float currentCooldown = 0f;
 
+    protected void Awake()
+    {
+        InitializeData();
+    }
+
+    protected void InitializeData()
+    {
+        if(towerDB != null && towerDB.Tower != null)
+        {
+            myTowerData = towerDB.Tower.FirstOrDefault(t => t.Number == myTowerNumber);
+        }
+    }
+
     protected void Update()
     {
+        if (myTowerData == null) return;
+
         if (currentCooldown > 0)
         {
             currentCooldown -= Time.deltaTime;
@@ -20,7 +39,7 @@ public abstract class Tower : MonoBehaviour
             if (CanAttack())
             {
                 Attack();
-                currentCooldown = towerData.attackCooldown;
+                currentCooldown = myTowerData.attackCooldown;
             }
         }
     }
@@ -30,10 +49,10 @@ public abstract class Tower : MonoBehaviour
 
     protected void OnDrawGizmosSelected()
     {
-        if (towerData != null)
+        if (myTowerData != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawSphere(transform.position, towerData.attackRange);
+            Gizmos.DrawSphere(transform.position, myTowerData.attackRange);
         }
     }
 }

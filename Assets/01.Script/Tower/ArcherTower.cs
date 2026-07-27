@@ -11,7 +11,7 @@ public class ArcherTower : Tower
     {
         target = null;
 
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, towerData.attackRange, enemyLayer);
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, myTowerData.attackRange, enemyLayer);
 
         if (enemies.Length == 0) return false;
 
@@ -20,7 +20,7 @@ public class ArcherTower : Tower
         foreach (Collider2D enemy in enemies)
         {
             float distance = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distance <= towerData.attackRange && distance < shortestDistance)
+            if (distance <= myTowerData.attackRange && distance < shortestDistance)
             {
                 shortestDistance = distance;
                 target = enemy.transform;
@@ -42,7 +42,7 @@ public class ArcherTower : Tower
             TowerBullet arrowScript = arrowObj.GetComponent<TowerBullet>();
             if (arrowScript != null)
             {
-                arrowScript.SetTarget(target, towerData.damage);
+                arrowScript.SetTarget(target, myTowerData.damage);
             }
         }
     }

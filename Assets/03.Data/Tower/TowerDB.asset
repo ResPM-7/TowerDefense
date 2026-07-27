@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29b31ef606edaf44e8e60d5d13719e5b, type: 3}
+  m_Name: TowerDB
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDB
+  Tower:
+  - Number: 100
+    towerName: Archer_T1
+    cost: 5
+    damage: 2
+    attackRange: 3
+    attackCooldown: 1.5
+    nextUpgradeDataNum: 101
+  - Number: 101
+    towerName: Archer_T2
+    cost: 10
+    damage: 4
+    attackRange: 3.2
+    attackCooldown: 1.2
+    nextUpgradeDataNum: 102
+  - Number: 102
+    towerName: Archer_T3
+    cost: 20
+    damage: 6
+    attackRange: 3.5
+    attackCooldown: 1
+    nextUpgradeDataNum: 0
+  - Number: 200
+    towerName: Wizard_T1
+    cost: 10
+    damage: 1
+    attackRange: 3
+    attackCooldown: 0.5
+    nextUpgradeDataNum: 201
+  - Number: 201
+    towerName: Wizard_T2
+    cost: 20
+    damage: 2
+    attackRange: 3.2
+    attackCooldown: 0.45
+    nextUpgradeDataNum: 202
+  - Number: 202
+    towerName: Wizard_T3
+    cost: 20
+    damage: 2.5
+    attackRange: 3.5
+    attackCooldown: 0.3
+    nextUpgradeDataNum: 0

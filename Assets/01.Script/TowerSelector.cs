@@ -62,7 +62,7 @@ public class TowerSelector : MonoBehaviour
         }
 
         currentSelectedTower = tower;
-        TowerData towerData = tower.TowerData;
+        TowerEntity towerData = tower.TowerData;
 
         if (rangeIndicator != null)
         {
