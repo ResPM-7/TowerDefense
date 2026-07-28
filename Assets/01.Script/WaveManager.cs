@@ -145,7 +145,7 @@ public class WaveManager : MonoBehaviour
             {
                 //새로운 문자열을 계속 생성하기때문에 GC가 계속 발생 그걸 방지하기 위해 SetText로 변경
                 //countdownText.text = $"다음 웨이브까지: {timer:F1}초"
-                countdownText.SetText("다음 웨이브까지: {0:F1}초", timer);
+                countdownText.SetText($"다음 웨이브까지: {timer:F1}초");
             }
 
             timer -= Time.deltaTime;

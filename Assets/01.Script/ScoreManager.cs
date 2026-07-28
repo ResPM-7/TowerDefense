@@ -3,20 +3,13 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager instance;
-
     [SerializeField] private TextMeshProUGUI scoreText;
 
-    public int currentScore { get; private set; } = 0;
+    public static int CurrentScore { get; private set; } = 0;
 
     private void Awake()
     {
-        if (scoreText != null)
-        {
-            instance = this;
-        }
-        else
-            Destroy(gameObject);
+        CurrentScore = 0;
     }
 
     private void Start()
@@ -24,9 +17,19 @@ public class ScoreManager : MonoBehaviour
         UpdateScoreUI();
     }
 
+    private void OnEnable()
+    {
+        Enemy.OnEnemyDeadScoreEvent += AddScore;
+    }
+
+    private void OnDisable()
+    {
+        Enemy.OnEnemyDeadScoreEvent -= AddScore;
+    }
+
     public void AddScore(int amount)
     {
-        currentScore += amount;
+        CurrentScore += amount;
         UpdateScoreUI();
     }
 
@@ -34,7 +37,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = currentScore.ToString("D6");
+            scoreText.text = CurrentScore.ToString("D6");
         }
     }
 }

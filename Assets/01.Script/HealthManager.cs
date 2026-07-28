@@ -1,20 +1,13 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
-    public static HealthManager instance;
-
     [SerializeField] private int health = 100;
     [SerializeField] private TextMeshProUGUI healthText;
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-    }
+    public static event Action OnGameOverEvent;
 
     private void Start()
     {
@@ -39,11 +32,9 @@ public class HealthManager : MonoBehaviour
         if (health <= 0)
         {
             health = 0;
+            healthText.text = health.ToString();
 
-            int finalWave = WaveManager.instance.CurrentWave;
-            int finalScore = ScoreManager.instance.currentScore;
-
-            GameOverUIManager.instance.ShowGameOver(finalWave, finalScore);
+            OnGameOverEvent?.Invoke();
         }
     }
 

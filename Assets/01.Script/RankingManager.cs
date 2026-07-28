@@ -15,6 +15,8 @@ public class RankingManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        DontDestroyOnLoad(gameObject);
+
         savePath = Path.Combine(Application.persistentDataPath, "ranking.json");
     }
 

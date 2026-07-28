@@ -5,25 +5,12 @@ using UnityEngine.UI;
 
 public class GameOverUIManager : MonoBehaviour
 {
-    public static GameOverUIManager instance;
-
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private Button titleButton;
 
     private RectTransform panelRect;
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     private void Start()
     {
@@ -38,7 +25,29 @@ public class GameOverUIManager : MonoBehaviour
         panelRect = gameOverPanel.GetComponent<RectTransform>();
     }
 
-    public void ShowGameOver(int finalWave, int finalScore)
+    private void OnEnable()
+    {
+        HealthManager.OnGameOverEvent += HandleGameOver;
+    }
+
+    private void OnDisable()
+    {
+        HealthManager.OnGameOverEvent -= HandleGameOver;
+    }
+
+    private void HandleGameOver()
+    {
+        int finalWave = 0;
+        if(WaveManager.instance != null)
+        {
+            finalWave = WaveManager.instance.CurrentWave;
+        }
+        int finalScore = ScoreManager.CurrentScore;
+
+        ShowResultPanel(finalWave, finalScore);
+    }
+
+    public void ShowResultPanel(int finalWave, int finalScore)
     {
         panelRect.SetAsLastSibling();
 
@@ -63,7 +72,6 @@ public class GameOverUIManager : MonoBehaviour
 
     public void ShowGameClear(int finalWave, int finalScore)
     {
-
         panelRect.SetAsLastSibling();
 
         gameOverPanel.SetActive(true);

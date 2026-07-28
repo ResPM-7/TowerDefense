@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     public EnemyEntity EnemyData { get { return myEnemyData; } }
 
     public static event Action<int> OnEnemyDeadEvent;
+    public static event Action<int> OnEnemyDeadScoreEvent;
     public static event Action<int> OnEnemyMoveEndPointEvent;
 
     protected float currentHP;
@@ -74,7 +75,7 @@ public class Enemy : MonoBehaviour
         if (currentHP <= 0)
         {
             OnEnemyDeadEvent?.Invoke(myEnemyData.dropCoins);
-            ScoreManager.instance.AddScore(myEnemyData.score);
+            OnEnemyDeadScoreEvent?.Invoke(myEnemyData.score);
             Die();
         }
 
