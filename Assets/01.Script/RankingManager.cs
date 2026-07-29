@@ -39,11 +39,12 @@ public class RankingManager : MonoBehaviour
     {
         RankList currentRanking = LoadRanking();
 
-        currentRanking.entries.Add(new RankEntry( wave, score));
+        currentRanking.entries.Add(new RankEntry(wave, score));
 
         //상위 10개만 자르기
         currentRanking.entries = currentRanking.entries
             .OrderByDescending(x => x.score)
+            .ThenByDescending(x => x.wave)
             .Take(10)
             .ToList();
 

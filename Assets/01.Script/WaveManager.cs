@@ -21,8 +21,6 @@ public class WaveData
 
 public class WaveManager : MonoBehaviour
 {
-    public static WaveManager instance;
-
     [SerializeField] private WaveData[] waves;
 
     [SerializeField] private Transform[] wayPoints;
@@ -40,13 +38,6 @@ public class WaveManager : MonoBehaviour
     private Coroutine countdownCoroutine;
 
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-    }
 
     private void Start()
     {

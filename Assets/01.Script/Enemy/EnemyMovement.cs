@@ -7,10 +7,13 @@ public class EnemyMovement : MonoBehaviour
     public Transform[] wayPoints;
     private int currentWayPoint = 0;
     private Enemy enemyBase;
+    private SpriteRenderer sp;
+    
 
     private void Awake()
     {
         enemyBase = GetComponent<Enemy>();
+        sp = GetComponent<SpriteRenderer>();
     }
 
     //오브젝트 폴링으로 재사용할때 초기화
@@ -26,6 +29,9 @@ public class EnemyMovement : MonoBehaviour
         Transform target = wayPoints[currentWayPoint];
         Vector3 dir = (target.position - transform.position).normalized;
 
+        if (dir.x < 0) sp.flipX = true;
+        else if (dir.x > 0) sp.flipX = false;
+
         transform.position += dir * enemyBase.EnemyData.speed * Time.deltaTime;
 
         if (Vector3.Distance(transform.position, target.position) < 0.05f)
@@ -37,5 +43,6 @@ public class EnemyMovement : MonoBehaviour
                 enemyBase.MoveEndPoint();
             }
         }
+
     }
 }

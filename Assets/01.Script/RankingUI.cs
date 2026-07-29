@@ -7,9 +7,21 @@ public class RankingUI : MonoBehaviour
     [SerializeField] private GameObject rankingPanel;
     [SerializeField] private TextMeshProUGUI[] rankTexts;
 
+    private Vector2 openPos;
+    private Vector2 closePos;
+
+    private RectTransform panelRect;
+
+    private void Awake()
+    {
+        panelRect = rankingPanel.GetComponent<RectTransform>();
+    }
+
     private void Start()
     {
-        rankingPanel.transform.localScale = Vector3.zero;
+        openPos = Vector2.zero;
+        closePos = panelRect.anchoredPosition;
+
         rankingPanel.SetActive(false);
     }
 
@@ -17,16 +29,16 @@ public class RankingUI : MonoBehaviour
     {
         rankingPanel.SetActive(true);
 
-        rankingPanel.transform.DOScale(Vector3.one, 0.4f)
-            .SetEase(Ease.OutBack);
+        panelRect.DOAnchorPos(openPos, 0.5f)
+            .SetEase(Ease.OutExpo);
 
         RefreshRankingUI();
     }
 
     public void CloseRanking()
     {
-        rankingPanel.transform.DOScale(Vector3.zero, 0.3f)
-            .SetEase(Ease.InBack)
+        panelRect.DOAnchorPos(closePos, 0.4f)
+            .SetEase(Ease.InExpo)
             .OnComplete(() => rankingPanel.SetActive(false));
     }
 

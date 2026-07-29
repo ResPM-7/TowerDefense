@@ -3,18 +3,9 @@ using UnityEngine;
 
 public class CoinManager : MonoBehaviour
 {
-    public static CoinManager instance;
 
     [SerializeField] private int coins;
     [SerializeField] private TextMeshProUGUI coinText;
-
-    private void Awake()
-    {
-        if(instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-    }
 
     private void Start()
     {

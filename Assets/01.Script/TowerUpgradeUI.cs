@@ -70,11 +70,11 @@ public class TowerUpgradeUI : MonoBehaviour
         if (targetTower == null || nextUpgradeData == null) return;
 
         int cost = nextUpgradeData.cost;
-        bool canbought = CoinManager.instance.HasEnoughCoins(cost);
+        bool canbought = GameManager.Instance.Coin.HasEnoughCoins(cost);
 
         if (canbought)
         {
-            CoinManager.instance.UpdateCoins(-cost);
+            GameManager.Instance.Coin.UpdateCoins(-cost);
 
             Vector3 pos = targetTower.transform.position;
             Quaternion rot = targetTower.transform.rotation;

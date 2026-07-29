@@ -108,7 +108,7 @@ public class TowerPlacer : MonoBehaviour
 
         ghostInstance.transform.position = worldCenter + new Vector3(0, placementMap.cellSize.y * 0.25f);
 
-        bool hasEnoughCost = CoinManager.instance.HasEnoughCoins(cachedTowerCost);
+        bool hasEnoughCost = GameManager.Instance.Coin.HasEnoughCoins(cachedTowerCost);
 
 
         bool isValid = placementMap.HasTile(cellPos)
@@ -129,7 +129,7 @@ public class TowerPlacer : MonoBehaviour
                 tower.transform.rotation = Quaternion.identity;
                 occupiedTiles.Add(cellPos);
 
-                CoinManager.instance.UpdateCoins(-cachedTowerCost);
+                GameManager.Instance.Coin.UpdateCoins(-cachedTowerCost);
             }
         }
     }

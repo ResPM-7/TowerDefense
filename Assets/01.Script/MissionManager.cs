@@ -6,17 +6,8 @@ using UnityEngine;
 public class MissionManager : MonoBehaviour
 {
     [Header("미션관리")]
-    public static MissionManager instance;
-
     [SerializeField] private TowerDefenseDB missionDB;
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-    }
 
     public float GetMissionCooldown(int missionNum)
     {
@@ -46,14 +37,14 @@ public class MissionManager : MonoBehaviour
 
         if (missionData != null)
         {
-            if (CoinManager.instance.HasEnoughCoins(missionData.cost))
+            if (GameManager.Instance.Coin.HasEnoughCoins(missionData.cost))
             {
                 var enemyData = missionDB.Enemy.FirstOrDefault(m => m.number == missionData.monsterSpawnNumber);
 
                 if (enemyData != null)
                 {
-                    CoinManager.instance.UpdateCoins(-missionData.cost);
-                    WaveManager.instance.SpawnEnemy(enemyData.enemyName);
+                    GameManager.Instance.Coin.UpdateCoins(-missionData.cost);
+                    GameManager.Instance.Wave.SpawnEnemy(enemyData.enemyName);
                     return true;
                 }
 

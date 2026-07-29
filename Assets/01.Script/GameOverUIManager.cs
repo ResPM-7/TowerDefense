@@ -38,9 +38,9 @@ public class GameOverUIManager : MonoBehaviour
     private void HandleGameOver()
     {
         int finalWave = 0;
-        if(WaveManager.instance != null)
+        if(GameManager.Instance.Wave != null)
         {
-            finalWave = WaveManager.instance.CurrentWave;
+            finalWave = GameManager.Instance.Wave.CurrentWave;
         }
         int finalScore = ScoreManager.CurrentScore;
 

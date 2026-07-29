@@ -2725,7 +2725,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 910875749}
   m_CullTransparentMesh: 1
---- !u!1 &948103022
+--- !u!1 &1088610544
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2733,43 +2733,127 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 948103024}
-  - component: {fileID: 948103023}
+  - component: {fileID: 1088610545}
+  - component: {fileID: 1088610546}
+  - component: {fileID: 1088610549}
+  - component: {fileID: 1088610548}
+  - component: {fileID: 1088610547}
   m_Layer: 0
-  m_Name: MissionManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &948103023
+--- !u!4 &1088610545
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088610544}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1962154068}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1088610546
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 948103022}
+  m_GameObject: {fileID: 1088610544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1bee72800edb9f43951ece6f7f600fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+--- !u!114 &1088610547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088610544}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed0c2315381875c43a3837edebbc63d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionManager
   missionDB: {fileID: 11400000, guid: 6a1b3e70690f26b46a8de6e942809709, type: 2}
---- !u!4 &948103024
-Transform:
+--- !u!114 &1088610548
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 948103022}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 1088610544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0cb9fcc466e91643aa89bc063e6eb49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoinManager
+  coins: 10
+  coinText: {fileID: 1130761133}
+--- !u!114 &1088610549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088610544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f9bdf50232877f49ac28626a8ee366d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaveManager
+  waves:
+  - spawnGroups:
+    - enemyName: NormalEnemy
+      count: 5
+      spawnInterval: 1
+    - enemyName: SpecialEnemy
+      count: 3
+      spawnInterval: 1
+    timeToNextWave: 10
+  - spawnGroups:
+    - enemyName: NormalEnemy
+      count: 5
+      spawnInterval: 1
+    - enemyName: SpecialEnemy
+      count: 10
+      spawnInterval: 1
+    timeToNextWave: 10
+  - spawnGroups:
+    - enemyName: SpecialEnemy
+      count: 15
+      spawnInterval: 0.8
+    timeToNextWave: 10
+  - spawnGroups:
+    - enemyName: SpecialEnemy
+      count: 20
+      spawnInterval: 0.5
+    timeToNextWave: 10
+  - spawnGroups:
+    - enemyName: GameOverMonster
+      count: 2
+      spawnInterval: 5
+    timeToNextWave: 10
+  wayPoints:
+  - {fileID: 445652765}
+  - {fileID: 2064855226}
+  - {fileID: 1370220714}
+  - {fileID: 601394637}
+  - {fileID: 1454832278}
+  - {fileID: 626129014}
+  waveNumberText: {fileID: 1875207400}
+  countdownText: {fileID: 1255282289}
+  startWaveButton: {fileID: 1860796494}
 --- !u!1 &1128784835
 GameObject:
   m_ObjectHideFlags: 0
@@ -6683,7 +6767,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1962154069}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: WaveManager, Assembly-CSharp
         m_MethodName: StartWave
         m_Mode: 1
@@ -6870,52 +6954,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1875207398}
   m_CullTransparentMesh: 1
---- !u!1 &1916709018
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1916709020}
-  - component: {fileID: 1916709019}
-  m_Layer: 0
-  m_Name: CoinManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1916709019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1916709018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0cb9fcc466e91643aa89bc063e6eb49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CoinManager
-  coins: 10
-  coinText: {fileID: 1130761133}
---- !u!4 &1916709020
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1916709018}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1927663588
 GameObject:
   m_ObjectHideFlags: 0
@@ -7076,9 +7114,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1962154068}
-  - component: {fileID: 1962154069}
   m_Layer: 0
-  m_Name: WaveManager
+  m_Name: Wave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7092,7 +7129,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1962154067}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7103,62 +7140,8 @@ Transform:
   - {fileID: 601394637}
   - {fileID: 1454832278}
   - {fileID: 626129014}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1088610545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1962154069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962154067}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f9bdf50232877f49ac28626a8ee366d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WaveManager
-  waves:
-  - spawnGroups:
-    - enemyName: NormalEnemy
-      count: 5
-      spawnInterval: 1
-    - enemyName: SpecialEnemy
-      count: 3
-      spawnInterval: 1
-    timeToNextWave: 10
-  - spawnGroups:
-    - enemyName: NormalEnemy
-      count: 5
-      spawnInterval: 1
-    - enemyName: SpecialEnemy
-      count: 10
-      spawnInterval: 1
-    timeToNextWave: 10
-  - spawnGroups:
-    - enemyName: SpecialEnemy
-      count: 15
-      spawnInterval: 0.8
-    timeToNextWave: 10
-  - spawnGroups:
-    - enemyName: SpecialEnemy
-      count: 20
-      spawnInterval: 0.5
-    timeToNextWave: 10
-  - spawnGroups:
-    - enemyName: GameOverMonster
-      count: 2
-      spawnInterval: 5
-    timeToNextWave: 10
-  wayPoints:
-  - {fileID: 445652765}
-  - {fileID: 2064855226}
-  - {fileID: 1370220714}
-  - {fileID: 601394637}
-  - {fileID: 1454832278}
-  - {fileID: 626129014}
-  waveNumberText: {fileID: 1875207400}
-  countdownText: {fileID: 1255282289}
-  startWaveButton: {fileID: 1860796494}
 --- !u!1 &1969340362
 GameObject:
   m_ObjectHideFlags: 0
@@ -8041,9 +8024,7 @@ SceneRoots:
   - {fileID: 2137529863}
   - {fileID: 2009476805}
   - {fileID: 254857328}
-  - {fileID: 1962154068}
-  - {fileID: 1916709020}
-  - {fileID: 948103024}
+  - {fileID: 1088610545}
   - {fileID: 1806993229}
   - {fileID: 2138811615}
   - {fileID: 902883464}
