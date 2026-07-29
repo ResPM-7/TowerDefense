@@ -1,6 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PoolType
+{
+    None,
+    Archer_T1, Archer_T2, Archer_T3,
+    Wizard_T1, Wizard_T2, Wizard_T3,
+    Arrow,
+    WizardBullet,
+    NormalEnemy,
+    SpecialEnemy,
+    SlimeKing,
+    GameOverMonster
+}
+
 public class ObjectPoolManager : MonoBehaviour
 {
     public static ObjectPoolManager instance;
@@ -8,6 +21,7 @@ public class ObjectPoolManager : MonoBehaviour
     [System.Serializable]
     public struct CanvasPoolItem
     {
+        public PoolType type;
         public GameObject prefab;
         public Transform targetCanvas;
         public int poolSize;
@@ -17,6 +31,7 @@ public class ObjectPoolManager : MonoBehaviour
     [System.Serializable]
     public struct ObjectPoolItem
     {
+        public PoolType type;
         public GameObject prefab;
         public int poolSize;
     }
@@ -26,10 +41,9 @@ public class ObjectPoolManager : MonoBehaviour
     [SerializeField] private List<ObjectPoolItem> objList = new List<ObjectPoolItem>();
     //캔버스 전용 오브젝트 풀 적 HPUI
     [SerializeField] private List<CanvasPoolItem> canvasPools = new List<CanvasPoolItem>();
-    Dictionary<string, Queue<GameObject>> pools = new Dictionary<string, Queue<GameObject>>();
 
-    Dictionary<string, Transform> poolParents = new Dictionary<string, Transform>();
-
+    private Dictionary<string, Queue<GameObject>> pools = new Dictionary<string, Queue<GameObject>>();
+    private Dictionary<string, Transform> poolParents = new Dictionary<string, Transform>();
     private Dictionary<string, GameObject> prefabDict = new Dictionary<string, GameObject>();
 
     private void Awake()
@@ -110,7 +124,7 @@ public class ObjectPoolManager : MonoBehaviour
         //CanvasPoolItem item = canvasPools.Find(x => x.prefab.name == name);
         //if (item.prefab != null) return item.prefab;
 
-        if(prefabDict.TryGetValue(name, out GameObject prefab))
+        if (prefabDict.TryGetValue(name, out GameObject prefab))
         {
             return prefab;
         }

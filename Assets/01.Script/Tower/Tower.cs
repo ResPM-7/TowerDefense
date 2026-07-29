@@ -5,7 +5,7 @@ public abstract class Tower : MonoBehaviour
 {
     [SerializeField] protected TowerDefenseDB towerDB;
     [SerializeField] protected int myTowerNumber;
-    [SerializeField] protected LayerMask enemyLayer = 1 << 6;
+    [SerializeField] protected LayerMask enemyLayer;
 
     protected TowerEntity myTowerData;
 
@@ -13,7 +13,6 @@ public abstract class Tower : MonoBehaviour
     {
         get
         {
-            // ★ 수정됨: myTowerData가 Null이거나, 유니티가 만든 가짜 껍데기(number가 0)라면 무조건 DB에서 다시 찾습니다!!!
             if (myTowerData == null || myTowerData.number == 0)
             {
                 if (towerDB != null && towerDB.Tower != null)
@@ -29,12 +28,17 @@ public abstract class Tower : MonoBehaviour
 
     protected void Awake()
     {
+        if (enemyLayer.value == 0)
+        {
+            enemyLayer = LayerMask.GetMask("Enemy");
+        }
+
         InitializeData();
     }
 
     protected void InitializeData()
     {
-        if(towerDB != null && towerDB.Tower != null)
+        if (towerDB != null && towerDB.Tower != null)
         {
             myTowerData = towerDB.Tower.FirstOrDefault(t => t.number == myTowerNumber);
         }
