@@ -81,7 +81,11 @@ public class ObjectPoolManager : MonoBehaviour
             prefabDict[item.type] = item.prefab;
             pools[item.type] = new Queue<GameObject>();
 
-            SetupPool(item.type, item.prefab, item.targetCanvas, item.poolSize);
+            GameObject parentPool = new GameObject($"{item.type}_Pool");
+
+            parentPool.transform.SetParent(item.targetCanvas, false);
+
+            SetupPool(item.type, item.prefab, parentPool.transform, item.poolSize);
         }
     }
 
@@ -114,7 +118,8 @@ public class ObjectPoolManager : MonoBehaviour
         else
         {
             GameObject prefab = GetPrefabFromList(type);
-            if (prefab != null) return null;
+
+            if (prefab == null) return null;
 
             GameObject go = Instantiate(prefab, poolParents[type]);
             go.name = type.ToString();
