@@ -105,11 +105,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d5f63a0b3ac8fd44befa3d87fa87e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NormalTower
+  towerType: 1
   towerDB: {fileID: 11400000, guid: 6a1b3e70690f26b46a8de6e942809709, type: 2}
   myTowerNumber: 100
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
+  towerAttackObj: 7
   arrowName: Arrow
   firePoint: {fileID: 3624667630329265888}
 --- !u!61 &1612409792738391915

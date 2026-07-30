@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private PoolType enemyType;
+
     //[SerializeField] private EnemyData enemyData;
     [SerializeField] private TowerDefenseDB enemyDB;
     [SerializeField] private int myEnemyNumber;
-
-    [SerializeField] private string hpBarName;
 
     protected EnemyEntity myEnemyData;
     public EnemyEntity EnemyData { get { return myEnemyData; } }
@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
 
     public void OnSpawn()
     {
-        currentHPBar = ObjectPoolManager.instance.GetObject(hpBarName);
+        currentHPBar = ObjectPoolManager.instance.GetObject(PoolType.EnemyHPBar);
 
         if (currentHPBar != null)
         {
@@ -97,11 +97,11 @@ public class Enemy : MonoBehaviour
     {
         if (currentHPBar != null)
         {
-            ObjectPoolManager.instance.ReturnObject(currentHPBar.name, currentHPBar.gameObject);
+            ObjectPoolManager.instance.ReturnObject(PoolType.EnemyHPBar, currentHPBar.gameObject);
             currentHPBar = null;
             hpSlider = null;
         }
 
-        ObjectPoolManager.instance.ReturnObject(gameObject.name, gameObject);
+        ObjectPoolManager.instance.ReturnObject(enemyType, gameObject);
     }
 }

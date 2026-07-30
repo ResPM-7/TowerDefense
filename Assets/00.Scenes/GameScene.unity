@@ -694,32 +694,32 @@ MonoBehaviour:
   - type: 4
     prefab: {fileID: 2495785808055566570, guid: ff474a0c6f2ea9b4bb40ddc9acf3263b, type: 3}
     poolSize: 3
-  - type: 0
+  - type: 5
     prefab: {fileID: 2495785808055566570, guid: 7052c53a3165cb446ba116b83ea18bd7, type: 3}
     poolSize: 3
-  - type: 0
+  - type: 6
     prefab: {fileID: 2495785808055566570, guid: 21e8117111ca8d940b2e2a8238b9aaa2, type: 3}
     poolSize: 3
-  - type: 0
+  - type: 7
     prefab: {fileID: 351119769543298781, guid: a697922fa1ef3ef49b8b2cff3ae56c3e, type: 3}
     poolSize: 5
-  - type: 0
+  - type: 8
     prefab: {fileID: 351119769543298781, guid: 8c32210e245ccf64e863973fc7a8a936, type: 3}
     poolSize: 5
-  - type: 0
+  - type: 9
     prefab: {fileID: 696189394087513901, guid: a4eb697389cccfc469beaf2e5bfa5465, type: 3}
     poolSize: 5
-  - type: 0
+  - type: 10
     prefab: {fileID: 696189394087513901, guid: 77fb73a2faec31e47bf4c6e7fbe339e3, type: 3}
     poolSize: 5
-  - type: 0
+  - type: 11
     prefab: {fileID: 696189394087513901, guid: 9bc467851f0d1ab48bd6fe8a2aedd4fb, type: 3}
     poolSize: 1
-  - type: 0
+  - type: 12
     prefab: {fileID: 696189394087513901, guid: f4a71ba7a05004245892e53353466d78, type: 3}
     poolSize: 1
   canvasPools:
-  - type: 0
+  - type: 13
     prefab: {fileID: 4438026972983014780, guid: 6b188dddd9597b1498e716552dd269fe, type: 3}
     targetCanvas: {fileID: 1318915265}
     poolSize: 5
@@ -2827,33 +2827,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   waves:
   - spawnGroups:
-    - enemyName: NormalEnemy
+    - enemyType: 9
       count: 5
       spawnInterval: 1
-    - enemyName: SpecialEnemy
+    - enemyType: 10
       count: 3
       spawnInterval: 1
     timeToNextWave: 10
   - spawnGroups:
-    - enemyName: NormalEnemy
+    - enemyType: 9
       count: 5
       spawnInterval: 1
-    - enemyName: SpecialEnemy
+    - enemyType: 10
       count: 10
       spawnInterval: 1
     timeToNextWave: 10
   - spawnGroups:
-    - enemyName: SpecialEnemy
+    - enemyType: 10
       count: 15
       spawnInterval: 0.8
     timeToNextWave: 10
   - spawnGroups:
-    - enemyName: SpecialEnemy
+    - enemyType: 10
       count: 20
       spawnInterval: 0.5
     timeToNextWave: 10
   - spawnGroups:
-    - enemyName: GameOverMonster
+    - enemyType: 12
       count: 2
       spawnInterval: 5
     timeToNextWave: 10

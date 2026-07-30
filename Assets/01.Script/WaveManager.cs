@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class SpawnGroup
 {
-    public string enemyName;
+    public PoolType enemyType;
     public int count;
     public float spawnInterval = 1f;
 }
@@ -90,7 +90,7 @@ public class WaveManager : MonoBehaviour
 
                 for(int i= 0; i<group.count; i++)
                 {
-                    SpawnEnemy(group.enemyName);
+                    SpawnEnemy(group.enemyType);
                     yield return wait;
                 }
             }
@@ -160,15 +160,15 @@ public class WaveManager : MonoBehaviour
             
             int displayWave = Mathf.Min(currentWaveIndex + 1, waves.Length);
             //waveNumberText.text = $"Wave {displayWave}";
-            waveNumberText.SetText("Wave {0}", displayWave);
+            waveNumberText.SetText($"Wave {displayWave}");
         }
     }
 
-    public void SpawnEnemy(string name)
+    public void SpawnEnemy(PoolType type)
     {
         if (string.IsNullOrEmpty(name)) return;
 
-        GameObject ob = ObjectPoolManager.instance.GetObject(name);
+        GameObject ob = ObjectPoolManager.instance.GetObject(type);
         if (ob != null)
         {
             ob.transform.position = wayPoints[0].position;

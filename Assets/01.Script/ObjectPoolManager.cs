@@ -11,7 +11,11 @@ public enum PoolType
     NormalEnemy,
     SpecialEnemy,
     SlimeKing,
-    GameOverMonster
+    GameOverMonster,
+
+
+    //Canvas 전용
+    EnemyHPBar
 }
 
 public class ObjectPoolManager : MonoBehaviour
@@ -42,9 +46,9 @@ public class ObjectPoolManager : MonoBehaviour
     //캔버스 전용 오브젝트 풀 적 HPUI
     [SerializeField] private List<CanvasPoolItem> canvasPools = new List<CanvasPoolItem>();
 
-    private Dictionary<string, Queue<GameObject>> pools = new Dictionary<string, Queue<GameObject>>();
-    private Dictionary<string, Transform> poolParents = new Dictionary<string, Transform>();
-    private Dictionary<string, GameObject> prefabDict = new Dictionary<string, GameObject>();
+    private Dictionary<PoolType, Queue<GameObject>> pools = new Dictionary<PoolType, Queue<GameObject>>();
+    private Dictionary<PoolType, Transform> poolParents = new Dictionary<PoolType, Transform>();
+    private Dictionary<PoolType, GameObject> prefabDict = new Dictionary<PoolType, GameObject>();
 
     private void Awake()
     {
@@ -58,62 +62,68 @@ public class ObjectPoolManager : MonoBehaviour
     {
         foreach (var item in objList)
         {
-            prefabDict[item.prefab.name] = item.prefab;
+            if(item.type==PoolType.None || item.prefab==null) continue;
 
-            pools[item.prefab.name] = new Queue<GameObject>();
+            prefabDict[item.type] = item.prefab;
 
-            GameObject parentPool = new GameObject($"{item.prefab.name}_Pool");
+            pools[item.type] = new Queue<GameObject>();
+
+            GameObject parentPool = new GameObject($"{item.type}_Pool");
             parentPool.transform.SetParent(this.transform);
 
-            SetupPool(item.prefab.name, item.prefab, parentPool.transform, item.poolSize);
+            SetupPool(item.type, item.prefab, parentPool.transform, item.poolSize);
         }
 
         foreach (var item in canvasPools)
         {
-            prefabDict[item.prefab.name] = item.prefab;
+            if (item.type == PoolType.None || item.prefab == null) continue;
 
-            SetupPool(item.prefab.name, item.prefab, item.targetCanvas, item.poolSize);
+            prefabDict[item.type] = item.prefab;
+            pools[item.type] = new Queue<GameObject>();
+
+            SetupPool(item.type, item.prefab, item.targetCanvas, item.poolSize);
         }
     }
 
-    private void SetupPool(string name, GameObject prefab, Transform parent, int size)
+    private void SetupPool(PoolType type, GameObject prefab, Transform parent, int size)
     {
-        pools[name] = new Queue<GameObject>();
-        poolParents[name] = parent;
+        poolParents[type] = parent;
 
         for (int i = 0; i < size; i++)
         {
             GameObject go = Instantiate(prefab, parent);
-            go.name = name;
+            go.name = type.ToString();
             go.SetActive(false);
-            pools[name].Enqueue(go);
+            pools[type].Enqueue(go);
         }
     }
 
-    public GameObject GetObject(string name)
+    public GameObject GetObject(PoolType type)
     {
-        if (!pools.ContainsKey(name))
+        if (!pools.ContainsKey(type))
         {
             return null;
         }
 
-        if (pools[name].Count > 0)
+        if (pools[type].Count > 0)
         {
-            GameObject go = pools[name].Dequeue();
+            GameObject go = pools[type].Dequeue();
             go.SetActive(true);
             return go;
         }
         else
         {
-            GameObject prefab = GetPrefabFromList(name);
-            GameObject go = Instantiate(prefab, poolParents[name]);
-            go.name = name;
+            GameObject prefab = GetPrefabFromList(type);
+            if (prefab != null) return null;
+
+            GameObject go = Instantiate(prefab, poolParents[type]);
+            go.name = type.ToString();
             go.SetActive(true);
             return go;
         }
     }
 
-    private GameObject GetPrefabFromList(string name)
+    private GameObject GetPrefabFromList(PoolType type)
     {
         //// 일반 리스트에서 찾기
         //// 
@@ -124,7 +134,7 @@ public class ObjectPoolManager : MonoBehaviour
         //CanvasPoolItem item = canvasPools.Find(x => x.prefab.name == name);
         //if (item.prefab != null) return item.prefab;
 
-        if (prefabDict.TryGetValue(name, out GameObject prefab))
+        if (prefabDict.TryGetValue(type, out GameObject prefab))
         {
             return prefab;
         }
@@ -132,15 +142,15 @@ public class ObjectPoolManager : MonoBehaviour
         return null;
     }
 
-    public void ReturnObject(string name, GameObject go)
+    public void ReturnObject(PoolType type, GameObject go)
     {
-        if (!pools.ContainsKey(name))
+        if (!pools.ContainsKey(type))
         {
             Destroy(go);
             return;
         }
         go.SetActive(false);
-        pools[name].Enqueue(go);
+        pools[type].Enqueue(go);
     }
 
 }

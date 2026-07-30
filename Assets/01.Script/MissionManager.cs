@@ -43,8 +43,10 @@ public class MissionManager : MonoBehaviour
 
                 if (enemyData != null)
                 {
+                    if(System.Enum.TryParse(enemyData.enemyName, out PoolType enemyType))
+
                     GameManager.Instance.Coin.UpdateCoins(-missionData.cost);
-                    GameManager.Instance.Wave.SpawnEnemy(enemyData.enemyName);
+                    GameManager.Instance.Wave.SpawnEnemy(enemyType);
                     return true;
                 }
 

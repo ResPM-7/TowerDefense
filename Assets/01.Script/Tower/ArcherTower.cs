@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ArcherTower : Tower
 {
+    [SerializeField] private PoolType towerAttackObj;
     [SerializeField] private string arrowName;
     [SerializeField] private Transform firePoint;
 
@@ -32,7 +33,7 @@ public class ArcherTower : Tower
     protected override void Attack()
     {
         if (target == null) return;
-        GameObject arrowObj = ObjectPoolManager.instance.GetObject(arrowName);
+        GameObject arrowObj = ObjectPoolManager.instance.GetObject(towerAttackObj);
 
         if (arrowObj != null)
         {

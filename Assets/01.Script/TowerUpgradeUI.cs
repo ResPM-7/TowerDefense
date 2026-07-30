@@ -79,16 +79,18 @@ public class TowerUpgradeUI : MonoBehaviour
             Vector3 pos = targetTower.transform.position;
             Quaternion rot = targetTower.transform.rotation;
 
-            string oldName = targetTower.TowerData.towerName;
+            PoolType oldType = targetTower.TowerType;
+            ObjectPoolManager.instance.ReturnObject(oldType, targetTower.gameObject);
 
-            ObjectPoolManager.instance.ReturnObject(oldName, targetTower.gameObject);
-
-            GameObject newTower = ObjectPoolManager.instance.GetObject(nextUpgradeData.towerName);
-
-            if (newTower != null)
+            if (System.Enum.TryParse(nextUpgradeData.towerName, out PoolType nextType))
             {
-                newTower.transform.position = pos;
-                newTower.transform.rotation = rot;
+                GameObject newTower = ObjectPoolManager.instance.GetObject(nextType);
+
+                if (newTower != null)
+                {
+                    newTower.transform.position = pos;
+                    newTower.transform.rotation = rot;
+                }
             }
 
             TowerSelector.instance.DeselectTower();

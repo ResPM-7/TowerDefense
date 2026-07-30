@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6960567d8a3d4e94ab938d6460750b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerBullet
+  type: 8
   speed: 8
   maxFlyDistance: 15
 --- !u!50 &-2503058025977563844

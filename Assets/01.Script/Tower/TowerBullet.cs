@@ -1,10 +1,9 @@
-
 using UnityEngine;
 
 
 public class TowerBullet : MonoBehaviour
-
 {
+    [SerializeField] private PoolType type;
     [SerializeField] private float speed = 8f;
     [SerializeField] private float maxFlyDistance = 15f;
 
@@ -67,6 +66,6 @@ public class TowerBullet : MonoBehaviour
         isReturned = true;
 
         target = null;
-        ObjectPoolManager.instance.ReturnObject(gameObject.name, gameObject);
+        ObjectPoolManager.instance.ReturnObject(type, gameObject);
     }
 }

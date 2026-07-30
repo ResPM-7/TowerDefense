@@ -18,7 +18,8 @@ public class TowerPlacer : MonoBehaviour
     private Camera mainCam;
     private GameObject lastSelectedPrefab = null;
     private int cachedTowerCost = 0;
-    private string cachedTowerName = "";
+
+    private PoolType cachedTowerType = PoolType.None;
 
     private void Awake()
     {
@@ -46,7 +47,7 @@ public class TowerPlacer : MonoBehaviour
 
         lastSelectedPrefab = null;
         cachedTowerCost = 0;
-        cachedTowerName = "";
+        cachedTowerType = PoolType.None;
 
     }
 
@@ -86,11 +87,11 @@ public class TowerPlacer : MonoBehaviour
 
             ghostSpriteRenderer.sprite = currentSelected.GetComponent<SpriteRenderer>().sprite;
 
-            cachedTowerName = currentSelected.name;
-
             Tower towerComponent = currentSelected.GetComponent<Tower>();
             if (towerComponent != null)
             {
+                cachedTowerType = towerComponent.TowerType;
+
                 TowerEntity data = towerComponent.TowerData;
                 if(data != null)
                 {
@@ -121,7 +122,7 @@ public class TowerPlacer : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame && isValid)
         {
-            GameObject tower = ObjectPoolManager.instance.GetObject(cachedTowerName);
+            GameObject tower = ObjectPoolManager.instance.GetObject(cachedTowerType);
 
             if (tower != null)
             {
