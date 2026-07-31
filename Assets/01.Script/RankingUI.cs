@@ -45,7 +45,7 @@ public class RankingUI : MonoBehaviour
     private void RefreshRankingUI()
     {
 
-        RankList rankList = RankingManager.instance.LoadRanking();
+        RankingData rankList = RankingManager.instance.LoadRanking();
 
         for (int i = 0; i < rankTexts.Length; i++)
         {

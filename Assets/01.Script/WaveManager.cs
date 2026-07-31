@@ -159,14 +159,13 @@ public class WaveManager : MonoBehaviour
         {
             
             int displayWave = Mathf.Min(currentWaveIndex + 1, waves.Length);
-            //waveNumberText.text = $"Wave {displayWave}";
             waveNumberText.SetText($"Wave {displayWave}");
         }
     }
 
     public void SpawnEnemy(PoolType type)
     {
-        if (string.IsNullOrEmpty(name)) return;
+        if (type == PoolType.None) return;
 
         GameObject ob = ObjectPoolManager.instance.GetObject(type);
         if (ob != null)

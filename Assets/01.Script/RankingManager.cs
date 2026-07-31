@@ -20,24 +20,24 @@ public class RankingManager : MonoBehaviour
         savePath = Path.Combine(Application.persistentDataPath, "ranking.json");
     }
 
-    public RankList LoadRanking()
+    public RankingData LoadRanking()
     {
         if (File.Exists(savePath))
         {
             string json = File.ReadAllText(savePath);
 
-            return JsonUtility.FromJson<RankList>(json);
+            return JsonUtility.FromJson<RankingData>(json);
         }
         else
         {
             //없으면 새로 만들기
-            return new RankList();
+            return new RankingData();
         }
     }
 
     public void AddRankAndSave(int wave, int score)
     {
-        RankList currentRanking = LoadRanking();
+        RankingData currentRanking = LoadRanking();
 
         currentRanking.entries.Add(new RankEntry(wave, score));
 

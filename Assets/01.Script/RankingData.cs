@@ -14,7 +14,7 @@ public class RankEntry
 }
 
 [System.Serializable]
-public class RankList
+public class RankingData
 {
     public List<RankEntry> entries = new List<RankEntry>();
 }

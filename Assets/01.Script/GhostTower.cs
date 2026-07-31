@@ -11,6 +11,6 @@ public class GhostTower : MonoBehaviour
 
     public void SetValid(bool valid)
     {
-        sr.color = valid ? new Color(0, 1, 0, 0.5f) : new Color(1, 0, 0, 0.5f);
+        sr.color = valid ? new Color(0, 0, 1, 0.5f) : new Color(1, 0, 0, 0.5f);
     }
 }

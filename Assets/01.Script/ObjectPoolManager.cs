@@ -41,9 +41,8 @@ public class ObjectPoolManager : MonoBehaviour
     }
 
     //기본 오브젝트
-    //[SerializeField] private List<GameObject> objList = new List<GameObject>();
     [SerializeField] private List<ObjectPoolItem> objList = new List<ObjectPoolItem>();
-    //캔버스 전용 오브젝트 풀 적 HPUI
+    //캔버스 전용 오브젝트 풀
     [SerializeField] private List<CanvasPoolItem> canvasPools = new List<CanvasPoolItem>();
 
     private Dictionary<PoolType, Queue<GameObject>> pools = new Dictionary<PoolType, Queue<GameObject>>();
@@ -130,15 +129,6 @@ public class ObjectPoolManager : MonoBehaviour
 
     private GameObject GetPrefabFromList(PoolType type)
     {
-        //// 일반 리스트에서 찾기
-        //// 
-        //ObjectPoolItem op = objList.Find(x => x.prefab.name == name);
-        //if (op.prefab != null) return op.prefab;
-
-        //// 캔버스 리스트에서 찾기
-        //CanvasPoolItem item = canvasPools.Find(x => x.prefab.name == name);
-        //if (item.prefab != null) return item.prefab;
-
         if (prefabDict.TryGetValue(type, out GameObject prefab))
         {
             return prefab;

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class TowerUpgradeUI : MonoBehaviour
     private Tower targetTower;
 
     private TowerEntity nextUpgradeData;
+
+    public event Action OnUpgradeComplete;
 
     private void Start()
     {
@@ -92,8 +95,7 @@ public class TowerUpgradeUI : MonoBehaviour
                     newTower.transform.rotation = rot;
                 }
             }
-
-            TowerSelector.instance.DeselectTower();
+            OnUpgradeComplete?.Invoke();
         }
     }
 }

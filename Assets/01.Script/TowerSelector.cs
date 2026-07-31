@@ -4,25 +4,25 @@ using UnityEngine.InputSystem;
 
 public class TowerSelector : MonoBehaviour
 {
-    public static TowerSelector instance;
-
     [SerializeField] private TowerUpgradeUI upgradeUI;
     [SerializeField] private Transform rangeIndicator;
 
     private Tower currentSelectedTower;
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-    }
-
     private void Start()
     {
         if (rangeIndicator != null)
             rangeIndicator.gameObject.SetActive(false);
+
+        if (upgradeUI != null)
+            upgradeUI.OnUpgradeComplete += DeselectTower;
+    }
+
+    private void OnDestroy()
+    {
+
+        if (upgradeUI = null)
+            upgradeUI.OnUpgradeComplete -= DeselectTower;
     }
 
     private void Update()
