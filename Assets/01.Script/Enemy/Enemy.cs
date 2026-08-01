@@ -5,23 +5,22 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private PoolType enemyType;
+    [SerializeField] protected PoolType enemyType;
 
-    //[SerializeField] private EnemyData enemyData;
-    [SerializeField] private TowerDefenseDB enemyDB;
-    [SerializeField] private int myEnemyNumber;
+    [SerializeField] protected TowerDefenseDB enemyDB;
+    [SerializeField] protected int myEnemyNumber;
 
     protected EnemyEntity myEnemyData;
     public EnemyEntity EnemyData { get { return myEnemyData; } }
-
-    public static event Action<int> OnEnemyDeadEvent;
-    public static event Action<int> OnEnemyDeadScoreEvent;
-    public static event Action<int> OnEnemyMoveEndPointEvent;
 
     protected float currentHP;
     private GameObject currentHPBar;
 
     private Slider hpSlider;
+
+    public static event Action<int> OnEnemyDeadDropCoinEvent;
+    public static event Action<int> OnEnemyDeadScoreEvent;
+    public static event Action<int> OnEnemyMoveEndPointEvent;
 
     private void Awake()
     {
@@ -74,7 +73,7 @@ public class Enemy : MonoBehaviour
 
         if (currentHP <= 0)
         {
-            OnEnemyDeadEvent?.Invoke(myEnemyData.dropCoins);
+            OnEnemyDeadDropCoinEvent?.Invoke(myEnemyData.dropCoins);
             OnEnemyDeadScoreEvent?.Invoke(myEnemyData.score);
             Die();
         }
