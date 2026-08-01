@@ -1,47 +1,60 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class SlidePanel
+{
+    public RectTransform togglePanel;
+    public Button toggleButton;
 
+    [HideInInspector]
+    public bool isOpen = false;
+}
 
 public class UIPanelSlide : MonoBehaviour
 {
-
-    [SerializeField] private RectTransform togglePanel;
-    [SerializeField] private Button toggleButton;
+    [SerializeField] private SlidePanel[] slidePanels;
 
     [SerializeField] private Vector2 openPos;
     [SerializeField] private Vector2 closePos;
 
     [SerializeField] private float duration = 0.5f;
 
-    private bool isOpen = false;
 
     private void Start()
     {
-        togglePanel.anchoredPosition = closePos;
-
-        if (toggleButton != null)
+        for (int i = 0; i < slidePanels.Length; i++)
         {
-            toggleButton.onClick.AddListener(ToggleShop);
+            int currentIndex = i;
+
+            SlidePanel panelData = slidePanels[currentIndex];
+
+            if(panelData.togglePanel != null)
+            {
+                panelData.togglePanel.anchoredPosition = closePos;
+                panelData.toggleButton.onClick.AddListener(() => TogglePanel(currentIndex));
+            }
         }
     }
 
-    public void ToggleShop()
+    public void TogglePanel(int index)
     {
-        isOpen = !isOpen;
+        SlidePanel panelData = slidePanels[index];
 
-        togglePanel.DOKill();
+        panelData.isOpen = !panelData.isOpen;
 
-        if(isOpen)
+        panelData.togglePanel.DOKill();
+
+        if (panelData.isOpen)
         {
-            togglePanel.SetAsLastSibling();
-
-            togglePanel.DOAnchorPos(openPos, duration).SetEase(Ease.OutSine);
+            panelData.togglePanel.SetAsLastSibling();
+            panelData.togglePanel.DOAnchorPos(openPos, duration).SetEase(Ease.OutSine);
         }
         else
         {
-            togglePanel.DOAnchorPos(closePos, duration).SetEase(Ease.InSine);
+            panelData.togglePanel.DOAnchorPos(closePos, duration).SetEase(Ease.InSine);
         }
     }
 }
