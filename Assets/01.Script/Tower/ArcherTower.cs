@@ -3,7 +3,6 @@ using UnityEngine;
 public class ArcherTower : Tower
 {
     [SerializeField] private PoolType towerAttackObj;
-    [SerializeField] private string arrowName;
     [SerializeField] private Transform firePoint;
 
     private Transform target;

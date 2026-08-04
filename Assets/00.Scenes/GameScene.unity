@@ -2784,7 +2784,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0c2315381875c43a3837edebbc63d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionManager
-  missionDB: {fileID: 11400000, guid: 6a1b3e70690f26b46a8de6e942809709, type: 2}
 --- !u!114 &1088610548
 MonoBehaviour:
   m_ObjectHideFlags: 0

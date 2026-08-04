@@ -1,55 +1,42 @@
-using System;
-using System.Linq;
 using UnityEngine;
 
 
 public class MissionManager : MonoBehaviour
 {
-    [Header("미션관리")]
-    [SerializeField] private TowerDefenseDB missionDB;
-
 
     public float GetMissionCooldown(int missionNum)
     {
-        if (missionDB != null && missionDB.Mission != null)
+        if (GameData.Missions.TryGetValue(missionNum, out MissionEntity data))
         {
-            var data = missionDB.Mission.FirstOrDefault(m => m.number == missionNum);
-            if (data != null) return data.cooldown;
+            return data.cooldown;
         }
         return 0;
     }
 
     public int GetMissionCost(int missionNum)
     {
-        if (missionDB != null && missionDB.Mission != null)
+        if (GameData.Missions.TryGetValue(missionNum, out MissionEntity data))
         {
-            var data = missionDB.Mission.FirstOrDefault(m => m.number == missionNum);
-            if (data != null) return data.cost;
+            return data.cost;
         }
         return 0;
     }
 
     public bool SpawnMissionEnemy(int missionNum)
     {
-        if (missionDB == null) return false;
-
-        var missionData = missionDB.Mission.FirstOrDefault(m => m.number == missionNum);
-
-        if (missionData != null)
+        if (GameData.Missions.TryGetValue(missionNum, out MissionEntity missionData))
         {
             if (GameManager.Instance.Coin.HasEnoughCoins(missionData.cost))
             {
-                var enemyData = missionDB.Enemy.FirstOrDefault(m => m.number == missionData.monsterSpawnNumber);
-
-                if (enemyData != null)
+                if (GameData.Enemies.TryGetValue(missionData.monsterSpawnNumber, out EnemyEntity enemyData))
                 {
-                    if(System.Enum.TryParse(enemyData.enemyName, out PoolType enemyType))
-
-                    GameManager.Instance.Coin.UpdateCoins(-missionData.cost);
-                    GameManager.Instance.Wave.SpawnEnemy(enemyType);
-                    return true;
+                    if (System.Enum.TryParse(enemyData.enemyName, out PoolType enemyType))
+                    {
+                        GameManager.Instance.Coin.UpdateCoins(-missionData.cost);
+                        GameManager.Instance.Wave.SpawnEnemy(enemyType);
+                        return true;
+                    }
                 }
-
             }
         }
         return false;

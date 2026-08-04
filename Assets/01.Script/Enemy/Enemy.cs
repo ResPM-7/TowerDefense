@@ -7,11 +7,10 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] protected PoolType enemyType;
 
-    [SerializeField] protected TowerDefenseDB enemyDB;
     [SerializeField] protected int myEnemyNumber;
 
     protected EnemyEntity myEnemyData;
-    public EnemyEntity EnemyData { get { return myEnemyData; } }
+    public EnemyEntity EnemyData => myEnemyData;
 
     protected float currentHP;
     private GameObject currentHPBar;
@@ -29,9 +28,9 @@ public class Enemy : MonoBehaviour
 
     protected void InitializeData()
     {
-        if(enemyDB != null && enemyDB.Enemy != null)
+        if(GameData.Enemies.TryGetValue(myEnemyNumber, out EnemyEntity data))
         {
-            myEnemyData = enemyDB.Enemy.FirstOrDefault(e =>e.number == myEnemyNumber);
+            myEnemyData = data;
         }
     }
 

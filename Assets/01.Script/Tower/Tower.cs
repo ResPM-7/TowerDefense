@@ -4,7 +4,6 @@ using UnityEngine;
 public abstract class Tower : MonoBehaviour
 {
     [SerializeField] protected PoolType towerType;
-    [SerializeField] protected TowerDefenseDB towerDB;
     [SerializeField] protected int myTowerNumber;
     [SerializeField] protected LayerMask enemyLayer;
 
@@ -13,19 +12,13 @@ public abstract class Tower : MonoBehaviour
         get { return towerType; }
     }
 
-
     protected TowerEntity myTowerData;
     public TowerEntity TowerData
     {
         get
         {
-            if (myTowerData == null || myTowerData.number == 0)
-            {
-                if (towerDB != null && towerDB.Tower != null)
-                {
-                    myTowerData = towerDB.Tower.FirstOrDefault(t => t.number == myTowerNumber);
-                }
-            }
+            if (myTowerData.number == 0)
+                InitializeData();
             return myTowerData;
         }
     }
@@ -44,9 +37,9 @@ public abstract class Tower : MonoBehaviour
 
     protected void InitializeData()
     {
-        if (towerDB != null && towerDB.Tower != null)
+        if (GameData.Towers.TryGetValue(myTowerNumber, out TowerEntity data))
         {
-            myTowerData = towerDB.Tower.FirstOrDefault(t => t.number == myTowerNumber);
+            myTowerData = data;
         }
     }
 
