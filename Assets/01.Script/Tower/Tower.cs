@@ -7,16 +7,12 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected LayerMask enemyLayer;
     public string PoolName => poolName;
 
+    [SerializeField] protected int myTowerNumber;
+    public int TowerNumber => myTowerNumber;
+
     protected TowerEntity myTowerData;
-    public TowerEntity TowerData
-    {
-        get
-        {
-            if (myTowerData.number == 0)
-                InitializeData();
-            return myTowerData;
-        }
-    }
+
+    public TowerEntity TowerData => myTowerData;
 
     protected float currentCooldown = 0f;
 
@@ -27,16 +23,21 @@ public abstract class Tower : MonoBehaviour
             enemyLayer = LayerMask.GetMask("Enemy");
         }
 
-        InitializeData();
     }
 
-    protected void InitializeData()
+    public virtual void Setup(TowerEntity data)
     {
-        if (GameData.Towers.TryGetValue(myTowerNumber, out TowerEntity data))
-        {
-            myTowerData = data;
-        }
+        myTowerData = data;
+        currentCooldown = 0f; // 새로 배치될 때 쿨다운 초기화
+
+        OnSpawn();
     }
+
+    // 자식 클래스(예: ArcherTower)에서 추가 초기화가 필요할 때 오버라이드할 수 있는 가상 함수
+    protected virtual void OnSpawn()
+    {
+    }
+
 
     protected void Update()
     {
@@ -64,7 +65,7 @@ public abstract class Tower : MonoBehaviour
         if (myTowerData != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawSphere(transform.position, myTowerData.attackRange);
+            Gizmos.DrawWireSphere(transform.position, myTowerData.attackRange);
         }
     }
 }

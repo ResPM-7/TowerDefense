@@ -19,7 +19,7 @@ public class WaveData
     public float timeToNextWave = 10f;
 }
 
-public class WaveManager : MonoBehaviour
+public class WaveManager : Singleton<WaveManager>
 {
     [SerializeField] private WaveData[] waves;
 

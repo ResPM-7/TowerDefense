@@ -7,9 +7,10 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] protected string poolName;
 
-
     protected EnemyEntity myEnemyData;
     public EnemyEntity EnemyData => myEnemyData;
+
+    private string enemyHPBar = "EnemyHPBar";
 
     protected float currentHP;
     private GameObject currentHPBar;
@@ -30,7 +31,7 @@ public class Enemy : MonoBehaviour
 
     public void OnSpawn()
     {
-        currentHPBar = ObjectPoolManager.instance.GetObject("EnemyHPBar");
+        currentHPBar = ObjectPoolManager.instance.GetObject(enemyHPBar);
 
         if (currentHPBar != null)
         {
@@ -84,7 +85,7 @@ public class Enemy : MonoBehaviour
         if (currentHPBar != null)
         {
             // Enum 대신 문자열 "EnemyHPBar" 사용
-            ObjectPoolManager.instance.ReturnObject("EnemyHPBar", currentHPBar.gameObject);
+            ObjectPoolManager.instance.ReturnObject(enemyHPBar, currentHPBar.gameObject);
             currentHPBar = null;
             hpSlider = null;
         }

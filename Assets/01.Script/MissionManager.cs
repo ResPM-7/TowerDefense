@@ -26,17 +26,16 @@ public class MissionManager : Singleton<MissionManager>
     {
         if (GameData.Missions.TryGetValue(missionNum, out MissionEntity missionData))
         {
-            if (GameManager.Instance.Coin.HasEnoughCoins(missionData.cost))
+            if (CoinManager.instance.HasEnoughCoins(missionData.cost))
             {
-                if (GameData.Enemies.TryGetValue(missionData.monsterSpawnNumber, out EnemyEntity enemyData))
-                {
-                    if (System.Enum.TryParse(enemyData.enemyName, out PoolType enemyType))
-                    {
-                        GameManager.Instance.Coin.UpdateCoins(-missionData.cost);
-                        GameManager.Instance.Wave.SpawnEnemy(enemyType);
-                        return true;
-                    }
-                }
+                // 1. 코인 차감
+                CoinManager.instance.UpdateCoins(-missionData.cost);
+
+                // 2. Enum 파싱이나 에너미 데이터 탐색 로직 완전 삭제!
+                // 앞서 수정해둔 WaveManager가 '몬스터 번호(int)'만 받으면 알아서 스폰해주므로 바로 넘겨줍니다.
+                WaveManager.instance.SpawnEnemy(missionData.monsterSpawnNumber);
+
+                return true;
             }
         }
         return false;

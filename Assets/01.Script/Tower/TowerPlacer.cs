@@ -19,7 +19,8 @@ public class TowerPlacer : MonoBehaviour
     private GameObject lastSelectedPrefab = null;
     private int cachedTowerCost = 0;
 
-    private PoolType cachedTowerType = PoolType.None;
+    private string cachedPoolName = "";
+    private int cachedTowerNumber = 0;
 
     private void Awake()
     {
@@ -47,7 +48,9 @@ public class TowerPlacer : MonoBehaviour
 
         lastSelectedPrefab = null;
         cachedTowerCost = 0;
-        cachedTowerType = PoolType.None;
+
+        cachedPoolName = "";
+        cachedTowerNumber = 0;
 
     }
 
@@ -90,10 +93,10 @@ public class TowerPlacer : MonoBehaviour
             Tower towerComponent = currentSelected.GetComponent<Tower>();
             if (towerComponent != null)
             {
-                cachedTowerType = towerComponent.TowerType;
+                cachedPoolName = towerComponent.PoolName;
+                cachedTowerNumber = towerComponent.TowerNumber;
 
-                TowerEntity data = towerComponent.TowerData;
-                if(data != null)
+                if (GameData.Towers.TryGetValue(cachedTowerNumber, out TowerEntity data))
                 {
                     cachedTowerCost = data.cost;
                 }
@@ -109,7 +112,7 @@ public class TowerPlacer : MonoBehaviour
 
         ghostInstance.transform.position = worldCenter + new Vector3(0, placementMap.cellSize.y * 0.25f);
 
-        bool hasEnoughCost = GameManager.Instance.Coin.HasEnoughCoins(cachedTowerCost);
+        bool hasEnoughCost = CoinManager.instance.HasEnoughCoins(cachedTowerCost);
 
 
         bool isValid = placementMap.HasTile(cellPos)
@@ -122,15 +125,20 @@ public class TowerPlacer : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame && isValid)
         {
-            GameObject tower = ObjectPoolManager.instance.GetObject(cachedTowerType);
+            GameObject towerObj = ObjectPoolManager.instance.GetObject(cachedPoolName);
 
-            if (tower != null)
+            if (towerObj != null)
             {
-                tower.transform.position = ghostInstance.transform.position;
-                tower.transform.rotation = Quaternion.identity;
+                towerObj.transform.position = ghostInstance.transform.position;
+                towerObj.transform.rotation = Quaternion.identity;
                 occupiedTiles.Add(cellPos);
 
-                GameManager.Instance.Coin.UpdateCoins(-cachedTowerCost);
+                CoinManager.instance.UpdateCoins(-cachedTowerCost);
+
+                if (GameData.Towers.TryGetValue(cachedTowerNumber, out TowerEntity data))
+                {
+                    towerObj.GetComponent<Tower>().Setup(data);
+                }
             }
         }
     }

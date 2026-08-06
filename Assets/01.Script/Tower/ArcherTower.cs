@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ArcherTower : Tower
 {
-    [SerializeField] private PoolType towerAttackObj;
+    [SerializeField] private string projectilePoolName;
     [SerializeField] private Transform firePoint;
 
     private Transform target;
@@ -20,7 +20,7 @@ public class ArcherTower : Tower
         foreach (Collider2D enemy in enemies)
         {
             float distance = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distance <= myTowerData.attackRange && distance < shortestDistance)
+            if (distance < shortestDistance)
             {
                 shortestDistance = distance;
                 target = enemy.transform;
@@ -32,7 +32,7 @@ public class ArcherTower : Tower
     protected override void Attack()
     {
         if (target == null) return;
-        GameObject arrowObj = ObjectPoolManager.instance.GetObject(towerAttackObj);
+        GameObject arrowObj = ObjectPoolManager.instance.GetObject(projectilePoolName);
 
         if (arrowObj != null)
         {

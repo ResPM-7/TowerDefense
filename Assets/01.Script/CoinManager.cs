@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class CoinManager : MonoBehaviour
+public class CoinManager : Singleton<CoinManager>
 {
 
     [SerializeField] private int coins;

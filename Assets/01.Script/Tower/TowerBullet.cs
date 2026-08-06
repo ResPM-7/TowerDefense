@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TowerBullet : MonoBehaviour
 {
-    [SerializeField] private PoolType type;
+    [SerializeField] private string poolName;
     [SerializeField] private float speed = 8f;
     [SerializeField] private float maxFlyDistance = 15f;
 
@@ -45,6 +45,7 @@ public class TowerBullet : MonoBehaviour
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle - 90);
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isReturned) return;
@@ -66,6 +67,6 @@ public class TowerBullet : MonoBehaviour
         isReturned = true;
 
         target = null;
-        ObjectPoolManager.instance.ReturnObject(type, gameObject);
+        ObjectPoolManager.instance.ReturnObject(poolName, gameObject);
     }
 }

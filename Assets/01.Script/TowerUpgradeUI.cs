@@ -12,10 +12,7 @@ public class TowerUpgradeUI : MonoBehaviour
 
     [SerializeField] private Vector3 offset = new Vector3(0, -1f, 0);
 
-    [SerializeField] private TowerDefenseDB towerDB;
-
     private Tower targetTower;
-
     private TowerEntity nextUpgradeData;
 
     public event Action OnUpgradeComplete;
@@ -31,11 +28,11 @@ public class TowerUpgradeUI : MonoBehaviour
         targetTower = tower;
         TowerEntity currentData = tower.TowerData;
 
-        if (currentData == null || towerDB == null) return;
+        if (currentData == null) return;
 
-        if(currentData.nextUpgradeDataNum != 0)
+        if (currentData.nextUpgradeDataNum != 0 && GameData.Towers.TryGetValue(currentData.nextUpgradeDataNum, out TowerEntity data))
         {
-            nextUpgradeData = towerDB.Tower.FirstOrDefault(t=>t.number == currentData.nextUpgradeDataNum);
+            nextUpgradeData = data;
         }
         else
         {
@@ -73,29 +70,35 @@ public class TowerUpgradeUI : MonoBehaviour
         if (targetTower == null || nextUpgradeData == null) return;
 
         int cost = nextUpgradeData.cost;
-        bool canbought = GameManager.Instance.Coin.HasEnoughCoins(cost);
+        bool canbought = CoinManager.instance.HasEnoughCoins(cost);
 
         if (canbought)
         {
-            GameManager.Instance.Coin.UpdateCoins(-cost);
+            CoinManager.instance.UpdateCoins(-cost);
 
             Vector3 pos = targetTower.transform.position;
             Quaternion rot = targetTower.transform.rotation;
 
-            PoolType oldType = targetTower.TowerType;
-            ObjectPoolManager.instance.ReturnObject(oldType, targetTower.gameObject);
+            string oldPoolName = targetTower.PoolName;
+            ObjectPoolManager.instance.ReturnObject(oldPoolName, targetTower.gameObject);
 
-            if (System.Enum.TryParse(nextUpgradeData.towerName, out PoolType nextType))
+            GameObject newTowerObj = ObjectPoolManager.instance.GetObject(nextUpgradeData.towerName);
+
+            if (newTowerObj != null)
             {
-                GameObject newTower = ObjectPoolManager.instance.GetObject(nextType);
+                newTowerObj.transform.position = pos;
+                newTowerObj.transform.rotation = rot;
 
-                if (newTower != null)
+                Tower newTowerScript = newTowerObj.GetComponent<Tower>();
+                if (newTowerScript != null)
                 {
-                    newTower.transform.position = pos;
-                    newTower.transform.rotation = rot;
+                    newTowerScript.Setup(nextUpgradeData);
                 }
             }
+
             OnUpgradeComplete?.Invoke();
+
+            HideUI();
         }
     }
 }

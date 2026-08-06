@@ -11,9 +11,14 @@ public class EnemyFactory : Singleton<EnemyFactory>
             return null;
         }
 
-        GameObject obj = ObjectPoolManager.instance.GetObject(enemyData.enemyName);
+        string safeEnemyName = enemyData.enemyName.Trim();
+        GameObject obj = ObjectPoolManager.instance.GetObject(safeEnemyName);
 
-        if (obj == null) return null;
+        if (obj == null)
+        {
+            Debug.LogError($"스폰 실패! ObjectPoolManager에 [{safeEnemyName}] (이)라는 이름의 풀이 없습니다! 인스펙터 스펠링을 확인하세요.");
+            return null;
+        }
 
         // 위치 설정
         obj.transform.position = spawnPosition;
