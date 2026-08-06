@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] protected PoolType enemyType;
+    [SerializeField] protected string poolName;
 
-    [SerializeField] protected int myEnemyNumber;
 
     protected EnemyEntity myEnemyData;
     public EnemyEntity EnemyData => myEnemyData;
@@ -21,28 +20,17 @@ public class Enemy : MonoBehaviour
     public static event Action<int> OnEnemyDeadScoreEvent;
     public static event Action<int> OnEnemyMoveEndPointEvent;
 
-    private void Awake()
+    public virtual void Setup(EnemyEntity data)
     {
-        InitializeData();
-    }
-
-    protected void InitializeData()
-    {
-        if(GameData.Enemies.TryGetValue(myEnemyNumber, out EnemyEntity data))
-        {
-            myEnemyData = data;
-        }
-    }
-
-    protected virtual void OnEnable()
-    {
+        myEnemyData = data;
         currentHP = myEnemyData.hp;
+
         OnSpawn();
     }
 
     public void OnSpawn()
     {
-        currentHPBar = ObjectPoolManager.instance.GetObject(PoolType.EnemyHPBar);
+        currentHPBar = ObjectPoolManager.instance.GetObject("EnemyHPBar");
 
         if (currentHPBar != null)
         {
@@ -95,11 +83,13 @@ public class Enemy : MonoBehaviour
     {
         if (currentHPBar != null)
         {
-            ObjectPoolManager.instance.ReturnObject(PoolType.EnemyHPBar, currentHPBar.gameObject);
+            // Enum 대신 문자열 "EnemyHPBar" 사용
+            ObjectPoolManager.instance.ReturnObject("EnemyHPBar", currentHPBar.gameObject);
             currentHPBar = null;
             hpSlider = null;
         }
 
-        ObjectPoolManager.instance.ReturnObject(enemyType, gameObject);
+        // Enum 대신 문자열 변수 사용
+        ObjectPoolManager.instance.ReturnObject(poolName, gameObject);
     }
 }

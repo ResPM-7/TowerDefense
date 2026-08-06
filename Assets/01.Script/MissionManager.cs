@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class MissionManager : MonoBehaviour
+public class MissionManager : Singleton<MissionManager>
 {
 
     public float GetMissionCooldown(int missionNum)

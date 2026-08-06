@@ -3,14 +3,9 @@ using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
 {
-    [SerializeField] protected PoolType towerType;
-    [SerializeField] protected int myTowerNumber;
+    [SerializeField] protected string poolName;
     [SerializeField] protected LayerMask enemyLayer;
-
-    public PoolType TowerType
-    {
-        get { return towerType; }
-    }
+    public string PoolName => poolName;
 
     protected TowerEntity myTowerData;
     public TowerEntity TowerData

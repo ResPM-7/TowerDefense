@@ -27,7 +27,7 @@ public class MissionButtonUI : MonoBehaviour
 
         if (missionCostText != null)
         {
-            int cost = GameManager.Instance.Mission.GetMissionCost(missionNumber);
+            int cost = MissionManager.instance.GetMissionCost(missionNumber);
             missionCostText.text = cost.ToString();
         }
     }
@@ -54,15 +54,15 @@ public class MissionButtonUI : MonoBehaviour
 
     private void TrySpawnMission()
     {
-        if (isCooldown || GameManager.Instance.Mission == null) return;
+        if (isCooldown || MissionManager.instance == null) return;
 
-        bool isSuccess = GameManager.Instance.Mission.SpawnMissionEnemy(missionNumber);
+        bool isSuccess = MissionManager.instance.SpawnMissionEnemy(missionNumber);
 
         if (isSuccess)
         {
             isCooldown = true;
 
-            maxCoolTime = GameManager.Instance.Mission.GetMissionCooldown(missionNumber);
+            maxCoolTime = MissionManager.instance.GetMissionCooldown(missionNumber);
             currentCoolTime = maxCoolTime;
 
             if (coolTimeImg != null) coolTimeImg.fillAmount = 1f;

@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
 
     public WaveManager Wave { get; private set; }
     public CoinManager Coin { get; private set; }
-    public MissionManager Mission { get; private set; }
 
     private void Awake()
     {
@@ -16,7 +15,6 @@ public class GameManager : MonoBehaviour
 
             Wave = GetComponent<WaveManager>();
             Coin = GetComponent<CoinManager>();
-            Mission = GetComponent<MissionManager>();
         }
         else
         {

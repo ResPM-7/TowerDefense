@@ -1,31 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PoolType
+public class ObjectPoolManager : Singleton<ObjectPoolManager>
 {
-    None,
-    Archer_T1, Archer_T2, Archer_T3,
-    Wizard_T1, Wizard_T2, Wizard_T3,
-    Arrow,
-    WizardBullet,
-    NormalEnemy,
-    SpecialEnemy,
-    SlimeKing,
-    GameOverMonster,
-
-
-    //Canvas 전용
-    EnemyHPBar
-}
-
-public class ObjectPoolManager : MonoBehaviour
-{
-    public static ObjectPoolManager instance;
-
     [System.Serializable]
     public struct CanvasPoolItem
     {
-        public PoolType type;
+        public string poolName;
         public GameObject prefab;
         public Transform targetCanvas;
         public int poolSize;
@@ -35,7 +16,7 @@ public class ObjectPoolManager : MonoBehaviour
     [System.Serializable]
     public struct ObjectPoolItem
     {
-        public PoolType type;
+        public string poolName;
         public GameObject prefab;
         public int poolSize;
     }
@@ -45,107 +26,102 @@ public class ObjectPoolManager : MonoBehaviour
     //캔버스 전용 오브젝트 풀
     [SerializeField] private List<CanvasPoolItem> canvasPools = new List<CanvasPoolItem>();
 
-    private Dictionary<PoolType, Queue<GameObject>> pools = new Dictionary<PoolType, Queue<GameObject>>();
-    private Dictionary<PoolType, Transform> poolParents = new Dictionary<PoolType, Transform>();
-    private Dictionary<PoolType, GameObject> prefabDict = new Dictionary<PoolType, GameObject>();
+    private Dictionary<string, Queue<GameObject>> pools = new Dictionary<string, Queue<GameObject>>();
+    private Dictionary<string, Transform> poolParents = new Dictionary<string, Transform>();
+    private Dictionary<string, GameObject> prefabDict = new Dictionary<string, GameObject>();
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-    }
+
 
     void Start()
     {
+        // 일반 오브젝트 풀 세팅
         foreach (var item in objList)
         {
-            if(item.type==PoolType.None || item.prefab==null) continue;
+            // 빈 문자열이거나 프리팹이 비어있으면 패스
+            if (string.IsNullOrEmpty(item.poolName) || item.prefab == null) continue;
 
-            prefabDict[item.type] = item.prefab;
+            prefabDict[item.poolName] = item.prefab;
+            pools[item.poolName] = new Queue<GameObject>();
 
-            pools[item.type] = new Queue<GameObject>();
-
-            GameObject parentPool = new GameObject($"{item.type}_Pool");
+            GameObject parentPool = new GameObject($"{item.poolName}_Pool");
             parentPool.transform.SetParent(this.transform);
 
-            SetupPool(item.type, item.prefab, parentPool.transform, item.poolSize);
+            SetupPool(item.poolName, item.prefab, parentPool.transform, item.poolSize);
         }
 
+        // 캔버스 전용 오브젝트 풀 세팅 (작성하신 원본 로직 완벽 복구)
         foreach (var item in canvasPools)
         {
-            if (item.type == PoolType.None || item.prefab == null) continue;
+            if (string.IsNullOrEmpty(item.poolName) || item.prefab == null) continue;
 
-            prefabDict[item.type] = item.prefab;
-            pools[item.type] = new Queue<GameObject>();
+            prefabDict[item.poolName] = item.prefab;
+            pools[item.poolName] = new Queue<GameObject>();
 
-            GameObject parentPool = new GameObject($"{item.type}_Pool");
-
+            GameObject parentPool = new GameObject($"{item.poolName}_Pool");
+            // UI 객체가 깨지지 않도록 targetCanvas에 false로 붙임
             parentPool.transform.SetParent(item.targetCanvas, false);
 
-            SetupPool(item.type, item.prefab, parentPool.transform, item.poolSize);
+            SetupPool(item.poolName, item.prefab, parentPool.transform, item.poolSize);
         }
     }
 
-    private void SetupPool(PoolType type, GameObject prefab, Transform parent, int size)
+    private void SetupPool(string poolName, GameObject prefab, Transform parent, int size)
     {
-        poolParents[type] = parent;
+        poolParents[poolName] = parent;
 
         for (int i = 0; i < size; i++)
         {
             GameObject go = Instantiate(prefab, parent);
-            go.name = type.ToString();
+            go.name = poolName;
             go.SetActive(false);
-            pools[type].Enqueue(go);
+            pools[poolName].Enqueue(go);
         }
     }
 
-    public GameObject GetObject(PoolType type)
+    public GameObject GetObject(string poolName)
     {
-        if (!pools.ContainsKey(type))
+        if (!pools.ContainsKey(poolName))
         {
             return null;
         }
 
-        if (pools[type].Count > 0)
+        if (pools[poolName].Count > 0)
         {
-            GameObject go = pools[type].Dequeue();
+            GameObject go = pools[poolName].Dequeue();
             go.SetActive(true);
             return go;
         }
         else
         {
-            GameObject prefab = GetPrefabFromList(type);
+            GameObject prefab = GetPrefabFromList(poolName);
 
             if (prefab == null) return null;
 
-            GameObject go = Instantiate(prefab, poolParents[type]);
-            go.name = type.ToString();
+            GameObject go = Instantiate(prefab, poolParents[poolName]);
+            go.name = poolName;
             go.SetActive(true);
             return go;
         }
     }
 
-    private GameObject GetPrefabFromList(PoolType type)
+    private GameObject GetPrefabFromList(string poolName)
     {
-        if (prefabDict.TryGetValue(type, out GameObject prefab))
+        if (prefabDict.TryGetValue(poolName, out GameObject prefab))
         {
             return prefab;
         }
-
         return null;
     }
 
-    public void ReturnObject(PoolType type, GameObject go)
+    public void ReturnObject(string poolName, GameObject go)
     {
-        if (!pools.ContainsKey(type))
+        if (!pools.ContainsKey(poolName))
         {
             Destroy(go);
             return;
         }
         go.SetActive(false);
-        pools[type].Enqueue(go);
+        pools[poolName].Enqueue(go);
     }
 
 }

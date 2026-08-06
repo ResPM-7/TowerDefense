@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class SpawnGroup
 {
-    public PoolType enemyType;
+    public int enemyNumber;
     public int count;
     public float spawnInterval = 1f;
 }
@@ -90,7 +90,7 @@ public class WaveManager : MonoBehaviour
 
                 for(int i= 0; i<group.count; i++)
                 {
-                    SpawnEnemy(group.enemyType);
+                    SpawnEnemy(group.enemyNumber);
                     yield return wait;
                 }
             }
@@ -163,19 +163,20 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    public void SpawnEnemy(PoolType type)
+    public void SpawnEnemy(int enemyNumber)
     {
-        if (type == PoolType.None) return;
+        // 1. 팩토리에게 적 생성 및 엑셀 데이터 주입을 요청합니다.
+        Enemy enemy = EnemyFactory.instance.SpawnEnemy(enemyNumber, wayPoints[0].position);
 
-        GameObject ob = ObjectPoolManager.instance.GetObject(type);
-        if (ob != null)
+        if (enemy != null)
         {
-            ob.transform.position = wayPoints[0].position;
-            ob.transform.rotation = wayPoints[0].rotation;
-            EnemyMovement enemy = ob.GetComponent<EnemyMovement>();
-            if (enemy != null)
+            // 2. 웨이브 매니저의 역할인 회전값 및 길찾기(WayPoints) 정보를 세팅해 줍니다.
+            enemy.transform.rotation = wayPoints[0].rotation;
+
+            EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
+            if (enemyMovement != null)
             {
-                enemy.wayPoints = wayPoints;
+                enemyMovement.wayPoints = wayPoints;
             }
         }
     }
