@@ -20,7 +20,7 @@ public class ArcherTower : Tower
         foreach (Collider2D enemy in enemies)
         {
             float distance = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distance < shortestDistance)
+            if (distance <= myTowerData.attackRange && distance < shortestDistance)
             {
                 shortestDistance = distance;
                 target = enemy.transform;

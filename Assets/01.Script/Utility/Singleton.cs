@@ -4,6 +4,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
 
+    private static bool _applicationIsQuitting = false;
+
     public static T instance
     {
         get
@@ -18,7 +20,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
                     var singleton = _instance as Singleton<T>;
 
-                    if (singleton != null && singleton.isDonDestroy)
+                    if (singleton != null && singleton.isDontDestroy)
                     {
                         DontDestroyOnLoad(obj);
                     }
@@ -28,7 +30,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             {
                 var singleton = _instance as Singleton<T>;
 
-                if (singleton != null && singleton.isDonDestroy)
+                if (singleton != null && singleton.isDontDestroy)
                 {
                     DontDestroyOnLoad(singleton);
                 }
@@ -37,14 +39,14 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    [SerializeField] protected bool isDonDestroy = false;
+    [SerializeField] protected bool isDontDestroy = false;
 
     protected virtual void Awake()
     {
         if (_instance == null)
         {
             _instance = this as T;
-            if (isDonDestroy)
+            if (isDontDestroy)
             {
                 DontDestroyOnLoad(this.gameObject);
             }
@@ -63,4 +65,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
+    protected virtual void OnApplicationQuit()
+    {
+        _applicationIsQuitting = true;
+    }
 }
